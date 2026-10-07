@@ -129,13 +129,15 @@ def reset_password(conn, actor, user_id):
     read back, so a reset is the only safe way to hand someone access. The new password is returned once."""
     import secrets
     from .security import hash_password
-    if actor["role"] != "superadmin":
+    if actor["role"] not in ("superadmin", "admin"):
         raise PermissionError("forbidden")
     target = get_user(conn, user_id)
     if target is None:
         raise ValueError("not_found")
     if target["id"] == actor["id"] or target["role"] == "superadmin":
         raise PermissionError("cannot_change_superadmin_or_self")
+    if actor["role"] == "admin" and target["role"] not in ("agent", "gate", "farmer", "buyer"):
+        raise PermissionError("admin_can_only_help_agent_gate_farmer_buyer")
     alphabet = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"
     temp = "".join(secrets.choice(alphabet) for _ in range(10))
     conn.execute("UPDATE users SET password_hash=? WHERE id=?", (hash_password(temp), user_id))

@@ -188,6 +188,12 @@ class RoleTests(unittest.TestCase):
             users.reset_password(c, dict(agent), buyer)
         with self.assertRaises(PermissionError):
             users.reset_password(c, dict(sa), sa["id"])
+        admin = users.get_user(c, users.create_staff(c, dict(sa), role="admin", name="Admin Two", phone="0788000061", password="adminpass1"))
+        users.reset_password(c, dict(admin), buyer)
+        with self.assertRaises(PermissionError):
+            users.reset_password(c, dict(admin), admin["id"])
+        with self.assertRaises(PermissionError):
+            users.reset_password(c, dict(admin), sa["id"])
 
 
 if __name__ == "__main__":

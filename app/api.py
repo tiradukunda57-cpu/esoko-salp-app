@@ -336,7 +336,7 @@ def admin_user_status(user_id: int, body: StatusIn, user=Depends(require("admin"
 
 
 @app.post("/admin/users/{user_id}/reset-password")
-def admin_reset_password(user_id: int, user=Depends(require("superadmin")), conn=Depends(get_conn)):
+def admin_reset_password(user_id: int, user=Depends(require("admin", "superadmin")), conn=Depends(get_conn)):
     try:
         temp = users.reset_password(conn, user, user_id)
     except ValueError:

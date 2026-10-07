@@ -94,14 +94,14 @@
     function load() {
       E.api("/admin/users?" + (role.value ? "role=" + role.value + "&" : "") + (q.value ? "q=" + encodeURIComponent(q.value) : "")).then(function (rows) {
         E.fill(list, E.table([
-          { label: E.t("name"), key: "name" }, { label: E.t("phone"), key: "phone", nowrap: true }, { label: E.t("p.role"), render: function (u) { return E.t("role." + u.role); } },
+          { label: E.t("name"), key: "name" }, { label: E.t("phone"), key: "phone", nowrap: true }, { label: "ID ****", render: function (u) { return u.national_id_last4 || "-"; } }, { label: E.t("p.role"), render: function (u) { return E.t("role." + u.role); } },
           { label: E.t("status"), render: function (u) { return E.status(u.status, u.status); } }, { label: E.t("date"), render: function (u) { return E.date(u.created_at); } },
           { label: "", render: function (u) {
             if (u.role === "superadmin" || u.id === me.id) return "";
             var a = h("div", { class: "actions" });
             if (u.status === "active") a.appendChild(h("button", { class: "btn small danger", text: E.t("p.suspend"), on: { click: function () { setStatus(u, "suspended"); } } }));
             else a.appendChild(h("button", { class: "btn small", text: E.t("p.activate"), on: { click: function () { setStatus(u, "active"); } } }));
-            if (isSuper) a.appendChild(h("button", { class: "btn small sec", text: E.t("p.reset"), on: { click: function () { resetPw(u); } } }));
+            if (isSuper || ["agent", "gate", "farmer", "buyer"].indexOf(u.role) >= 0) a.appendChild(h("button", { class: "btn small sec", text: E.t("p.reset"), on: { click: function () { resetPw(u); } } }));
             if (u.role === "farmer" || u.role === "buyer") a.appendChild(h("button", { class: "btn small sec", text: E.t("p.permit"), on: { click: function () { E.permitModal({ subject: "user", user_id: u.id, role: u.role }); } } }));
             return a;
           } }
