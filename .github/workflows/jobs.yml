@@ -1,0 +1,38 @@
+# Scheduled jobs. Render's free plan has no cron, so GitHub calls the website at the right time.
+# Needs two repository secrets: APP_URL (e.g. https://esoko-salp.onrender.com) and JOB_SECRET (same value as ESOKO_JOB_SECRET on Render).
+name: scheduled-jobs
+on:
+  schedule:
+    - cron: "0 17 * * 2,5"     # 19:00 Kigali (UTC+2) every Tuesday and Friday: sold / unsold checkup
+    - cron: "20 17 * * 2,5"    # safety repeat 20 minutes later (the checkup is safe to run twice)
+    - cron: "15 * * * *"       # hourly housekeeping
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "checkup or housekeeping"
+        default: "housekeeping"
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Call the website
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          JOB_SECRET: ${{ secrets.JOB_SECRET }}
+          EVENT: ${{ github.event_name }}
+          CRON: ${{ github.event.schedule }}
+          INPUT_JOB: ${{ github.event.inputs.job }}
+        run: |
+          if [ -z "$APP_URL" ] || [ -z "$JOB_SECRET" ]; then echo "APP_URL or JOB_SECRET secret is missing"; exit 1; fi
+          if [ "$EVENT" = "workflow_dispatch" ]; then JOB="$INPUT_JOB"
+          elif [ "$CRON" = "15 * * * *" ]; then JOB=housekeeping
+          else JOB=checkup; fi
+          echo "Running job: $JOB"
+          for i in 1 2 3 4; do
+            code=$(curl -sS -o out.json -w "%{http_code}" --max-time 150 -X POST -H "X-Job-Secret: $JOB_SECRET" "${APP_URL%/}/internal/jobs/$JOB" || true)
+            echo "attempt $i -> HTTP $code"; cat out.json 2>/dev/null; echo
+            [ "$code" = "200" ] && exit 0
+            sleep 20
+          done
+          exit 1

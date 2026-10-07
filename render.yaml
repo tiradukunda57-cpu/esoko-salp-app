@@ -1,0 +1,39 @@
+# Render Blueprint: one free web service that serves the website, the API and the USSD callback.
+# The database is Neon (free PostgreSQL, does not expire) - paste its connection string as DATABASE_URL.
+services:
+  - type: web
+    runtime: python
+    name: esoko-salp
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+      - key: ESOKO_ENV
+        value: demo
+      - key: DATABASE_URL
+        sync: false
+      - key: ESOKO_BOOTSTRAP_NAME
+        sync: false
+      - key: ESOKO_BOOTSTRAP_PHONE
+        sync: false
+      - key: ESOKO_BOOTSTRAP_PASSWORD
+        sync: false
+      - key: ESOKO_SETTLEMENT_MSISDN
+        sync: false
+      - key: ESOKO_SUPPORT_PHONE
+        sync: false
+      - key: ESOKO_SHORTCODE
+        value: "*801#"
+      - key: ESOKO_JWT_SECRET
+        generateValue: true
+      - key: ESOKO_ID_PEPPER
+        generateValue: true
+      - key: ESOKO_WEBHOOK_SECRET
+        generateValue: true
+      - key: ESOKO_JOB_SECRET
+        generateValue: true
