@@ -24,7 +24,7 @@ Ururimi (Kinyarwanda / English / Français) rurahindurwa hejuru ku rupapuro rwos
 | Kwishyura kwa MoMo/Airtel nyakuri | **Ntibirabaho.** Hari kwigana gusa. Bisaba umufatanyabikorwa ufite uruhushya |
 | USSD (*801#) na SMS nyakuri | **Bisaba umukoresha w'itumanaho** (MTN/Airtel/aggregator). Kuri Render free hari gutinda (reba hepfo) |
 
-**Uru rubuga rushyirwaho ari "ikizamini" (`ESOKO_ENV=demo`):** ubwishyu n'SMS ni ibyo kwigana, nta mafaranga nyayo anyura. Ntugashyiremo Irangamuntu nyayo.
+**Uru rubuga rushyirwaho ari "ikizamini" (`ESOKO_ENV=demo`):** ubwishyu n'SMS ni ibyo kwigana, nta mafaranga nyayo anyura. Ntugashyiremo Indangamuntu nyayo.
 
 ## Gushyira kuri interineti (nta Terminal)
 
@@ -69,7 +69,7 @@ Render free ntigira cron, GitHub ni yo ihamagara urubuga.
 
 **Muri rubuga ubwo (byoroshye):** Admin > **Database**. 
 - Ubona tableau zose n'umubare w'imirongo. Kanda imwe urebe imirongo (25 kuri page), shakisha, manura **CSV** ufungure muri Excel.
-- Ni ugusoma gusa. Amagambo y'ibanga n'ibimenyetso by'Irangamuntu **ntibigaragara**. Buri kureba karandikwa muri **Ibyakozwe** (activity log).
+- Ni ugusoma gusa. Amagambo y'ibanga n'ibimenyetso by'Indangamuntu **ntibigaragara**. Buri kureba karandikwa muri **Ibyakozwe** (activity log).
 - Admin isanzwe ntibona iyi tab.
 
 **Kuri Neon (inyongera):** https://console.neon.tech > umushinga `esoko` > **Tables** (kureba/guhindura) cyangwa **SQL Editor** (SQL yawe, urugero `SELECT status, COUNT(*) FROM products GROUP BY status;`). Ibi ni ibyawe wenyine; ugire amakenga mu guhindura.

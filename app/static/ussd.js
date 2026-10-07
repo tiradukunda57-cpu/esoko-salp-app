@@ -5,7 +5,7 @@
   E.i18n({
     en: { "u.title": "USSD simulator", "u.help": "Try the phone menu a farmer sees when dialing the shortcode. Nothing is sent to a real phone.", "u.phone": "Phone number to simulate", "u.dial": "Dial", "u.send": "Send", "u.reset": "New session",
       "u.sim": "Test system: simulate that this number approved the registration payment", "u.simdone": "Registration payment approved.", "u.ended": "Session ended. Dial again." },
-    rw: { "u.title": "Isuzuma rya USSD", "u.help": "Gerageza menu ihabwa umuhinzi ahamagaye kode ngufi. Nta kigera kuri telefone nyayo.", "u.phone": "Nimero ya telefone yo kwigana", "u.dial": "Hamagara", "u.send": "Ohereza", "u.reset": "Itangira rishya",
+    rw: { "u.title": "Igerageza rya USSD", "u.help": "Gerageza urutonde (menu) rwerekanwa umuhinzi iyo ahamagaye kode ngufi. Nta butumwa bwoherezwa kuri telefone nyayo.", "u.phone": "Nimero ya telefone yo kwigana", "u.dial": "Hamagara", "u.send": "Ohereza", "u.reset": "Tangira bundi bushya",
       "u.sim": "Ikizamini: wigane ko iyi nimero yemeje ubwishyu bwo kwiyandikisha", "u.simdone": "Ubwishyu bwo kwiyandikisha bwemejwe.", "u.ended": "Igihe cyarangiye. Ongera uhamagare." },
     fr: { "u.title": "Simulateur USSD", "u.help": "Essayez le menu vu par un agriculteur qui compose le code court. Rien n'est envoyé à un vrai téléphone.", "u.phone": "Numéro à simuler", "u.dial": "Composer", "u.send": "Envoyer", "u.reset": "Nouvelle session",
       "u.sim": "Test : simuler que ce numéro a validé le paiement d'inscription", "u.simdone": "Paiement d'inscription validé.", "u.ended": "Session terminée. Recomposez." }

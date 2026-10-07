@@ -11,7 +11,7 @@
       "s.title": "Sign in", "s.pw": "Password", "s.sms": "SMS code", "s.phone": "Phone number", "s.password": "Password", "s.in": "Sign in",
       "s.sendcode": "Send me a code", "s.code": "6-digit code", "s.verify": "Verify and sign in", "s.sent": "If this number is registered, a code was sent by SMS.",
       "s.hint_pw": "Buyers, Agents, administrators and government.", "s.hint_sms": "Farmers and buyers: we text you a 6-digit code.",
-      "s.new": "New buyer? Create an account", "s.expired": "Your session ended. Please sign in again.",
+      "s.new": "New buyer? Create an account", "s.farmer": "Farmers: you register through your sector Agent, or by dialing {code} on any phone. A buyer account is the only one you can open yourself.", "s.expired": "Your session ended. Please sign in again.",
       "r.title": "Create a buyer account", "r.name": "Full name", "r.id": "National ID (16 digits)", "r.pw": "Password (8+ characters)", "r.loc": "Where you are", "r.consent": "I agree that E-Soko stores my data to run this service.",
       "r.fee": "A one-time registration fee of {fee} is paid by mobile money.", "r.go": "Register", "r.done": "Registered. Approve the mobile-money prompt on your phone (fee {fee}), then sign in.",
       "r.sim": "Test system: simulate that I approved the payment", "r.simdone": "Payment approved. You can sign in now.", "r.nodata": "Do not use a real National ID on the test system.",
@@ -20,18 +20,18 @@
       "f.help": "Help", "f.dial": "Dial", "f.test": "This is a test system. Payments and SMS are simulated."
     },
     rw: {
-      "h.title": "Gura kandi ugurishe ibihingwa n'amatungo byoroshye.", "h.lead": "Andikisha ibihingwa cyangwa amatungo yawe kuri telefone iyo ari yo yose, ntibisaba internet. Agent wemewe arabipima, amafaranga y'umuguzi abikwa neza (escrow), nawe ukishyurwa kuri mobile money.",
-      "h.board": "Ibiciro by'uyu munsi", "h.board_sub": "Igiciro rusange cy'ibitegereje abaguzi", "h.noprices": "Nta kintu cyanditswe ubu. Ibiciro bizagaragara abahinzi bandikishije.",
-      "h.product": "Igicuruzwa", "h.avg": "Rusange", "h.range": "Hagati ya", "h.unit": "kuri",
+      "h.title": "Gura kandi ugurishe ibihingwa n'amatungo mu buryo bworoshye.", "h.lead": "Andikisha ibihingwa cyangwa amatungo yawe kuri telefone iyo ari yo yose, ntibisaba interineti. Agent wemewe arabipima, amafaranga y'umuguzi abikwa neza (escrow), nawe ukishyurwa kuri mobile money.",
+      "h.board": "Ibiciro by'uyu munsi", "h.board_sub": "Impuzandengo y'ibiciro by'ibitegereje abaguzi", "h.noprices": "Nta kintu cyanditswe ubu. Ibiciro bizagaragara abahinzi nibamara kwandikisha.",
+      "h.product": "Igicuruzwa", "h.avg": "Impuzandengo", "h.range": "Hagati ya", "h.unit": "kuri",
       "s.title": "Injira", "s.pw": "Ijambo ry'ibanga", "s.sms": "Kode ya SMS", "s.phone": "Nimero ya telefone", "s.password": "Ijambo ry'ibanga", "s.in": "Injira",
-      "s.sendcode": "Ntumaho kode", "s.code": "Kode y'imibare 6", "s.verify": "Emeza kandi winjire", "s.sent": "Niba nimero yanditse, kode yoherejwe kuri SMS.",
-      "s.hint_pw": "Abaguzi, Agents, abayobozi na Leta.", "s.hint_sms": "Abahinzi n'abaguzi: tukohereza kode y'imibare 6.",
-      "s.new": "Uri umuguzi mushya? Fungura konti", "s.expired": "Igihe cyawe cyarangiye. Ongera winjire.",
-      "r.title": "Fungura konti y'umuguzi", "r.name": "Amazina yombi", "r.id": "Irangamuntu (imibare 16)", "r.pw": "Ijambo ry'ibanga (inyuguti 8+)", "r.loc": "Aho uherereye", "r.consent": "Nemeye ko E-Soko ibika amakuru yanjye kugira ngo ikore.",
-      "r.fee": "Wishyura rimwe amafaranga yo kwiyandikisha {fee} kuri mobile money.", "r.go": "Iyandikishe", "r.done": "Wiyandikishije. Emeza ubwishyu kuri telefone yawe ({fee}), hanyuma winjire.",
-      "r.sim": "Sisitemu y'ikizamini: wigane ko nemeje ubwishyu", "r.simdone": "Ubwishyu bwemejwe. Ushobora kwinjira.", "r.nodata": "Ntukoreshe Irangamuntu nyayo kuri sisitemu y'ikizamini.",
+      "s.sendcode": "Nyoherereza kode", "s.code": "Kode y'imibare 6", "s.verify": "Emeza winjire", "s.sent": "Niba iyi nimero yanditse, kode yoherejwe kuri SMS.",
+      "s.hint_pw": "Abaguzi, Agents, abayobozi n'abakozi ba Leta.", "s.hint_sms": "Abahinzi n'abaguzi: tuzakwoherereza kode y'imibare 6.",
+      "s.new": "Uri umuguzi mushya? Fungura konti", "s.farmer": "Abahinzi: iyandikishe kwa Agent wo mu murenge wawe, cyangwa uhamagare {code} kuri telefone iyo ari yo yose. Konti y'umuguzi ni yo yonyine wafungura ubwawe.", "s.expired": "Igihe cyawe cyarangiye. Ongera winjire.",
+      "r.title": "Fungura konti y'umuguzi", "r.name": "Amazina yombi", "r.id": "Indangamuntu (imibare 16)", "r.pw": "Ijambo ry'ibanga (inyuguti 8+)", "r.loc": "Aho uherereye", "r.consent": "Nemeye ko E-Soko ibika amakuru yanjye kugira ngo ntange serivisi.",
+      "r.fee": "Wishyura inshuro imwe gusa amafaranga yo kwiyandikisha ({fee}) kuri mobile money.", "r.go": "Iyandikishe", "r.done": "Wiyandikishije. Emeza ubwishyu kuri telefone yawe ({fee}), hanyuma winjire.",
+      "r.sim": "Sisitemu y'ikizamini: wigane ko nemeje ubwishyu", "r.simdone": "Ubwishyu bwemejwe. Ushobora kwinjira.", "r.nodata": "Ntukoreshe Indangamuntu nyayo kuri sisitemu y'ikizamini.",
       "st.1": "Andikisha", "st.1t": "Abahinzi bandikisha ku rubuga cyangwa bahamagara {code} kuri telefone iyo ari yo yose.", "st.2": "Ishyura neza", "st.2t": "Amafaranga y'umuguzi abikwa (escrow). Nta wishyurwa mbere y'uko ibicuruzwa bipimwa.",
-      "st.3": "Pima", "st.3t": "Agent wo mu gace apima ubwiza, ibiro n'ikarita y'itungo, ndetse n'ibyangombwa bya Leta bikenewe.", "st.4": "Wishyurwe", "st.4t": "Mu kuzana, umuhinzi yishyurwa kuri mobile money. Ibitaguzwe bihabwa kode yo kunyura ku irembo ry'isoko.",
+      "st.3": "Pima", "st.3t": "Agent wo mu gace apima ubwiza, ibiro n'ikarita y'itungo, ndetse n'ibyangombwa bya Leta bikenewe.", "st.4": "Wishyurwe", "st.4t": "Iyo bimaze kuzanwa, umuhinzi yishyurwa kuri mobile money. Ibitaguzwe bihabwa kode yo kunyura ku irembo ry'isoko.",
       "f.help": "Ubufasha", "f.dial": "Hamagara", "f.test": "Iyi ni sisitemu y'ikizamini. Ubwishyu na SMS ni ibyo kwigana."
     },
     fr: {
@@ -41,7 +41,7 @@
       "s.title": "Connexion", "s.pw": "Mot de passe", "s.sms": "Code SMS", "s.phone": "Numéro de téléphone", "s.password": "Mot de passe", "s.in": "Se connecter",
       "s.sendcode": "Envoyez-moi un code", "s.code": "Code à 6 chiffres", "s.verify": "Valider et se connecter", "s.sent": "Si ce numéro est enregistré, un code a été envoyé par SMS.",
       "s.hint_pw": "Acheteurs, agents, administrateurs et État.", "s.hint_sms": "Agriculteurs et acheteurs : nous envoyons un code à 6 chiffres.",
-      "s.new": "Nouvel acheteur ? Créer un compte", "s.expired": "Votre session a expiré. Reconnectez-vous.",
+      "s.new": "Nouvel acheteur ? Créer un compte", "s.farmer": "Agriculteurs : inscrivez-vous auprès de l'agent de votre secteur, ou en composant {code} depuis n'importe quel téléphone. Seul le compte acheteur peut être créé par vous-même.", "s.expired": "Votre session a expiré. Reconnectez-vous.",
       "r.title": "Créer un compte acheteur", "r.name": "Nom complet", "r.id": "Identifiant national (16 chiffres)", "r.pw": "Mot de passe (8+ caractères)", "r.loc": "Votre localité", "r.consent": "J'accepte que E-Soko conserve mes données pour fournir ce service.",
       "r.fee": "Des frais d'inscription uniques de {fee} sont payés par mobile money.", "r.go": "S'inscrire", "r.done": "Inscrit. Validez l'invite mobile money sur votre téléphone ({fee}), puis connectez-vous.",
       "r.sim": "Système de test : simuler que j'ai validé le paiement", "r.simdone": "Paiement validé. Vous pouvez vous connecter.", "r.nodata": "N'utilisez pas un vrai identifiant national sur le système de test.",
@@ -52,6 +52,9 @@
   });
 
   var root = E.$("root"), cfg = { mode: "test" };
+  var farmerNote = E.h("p", { class: "muted small" });
+  function setFarmerNote() { farmerNote.textContent = E.t("s.farmer", { code: cfg.shortcode || "*801#" }); }
+  setFarmerNote(); E.onLang(setFarmerNote);
 
   function priceBoard() {
     var box = h("div", { class: "board live" });
@@ -101,7 +104,8 @@
     render();
     var expired = /expired=1/.test(w.location.search) ? h("div", { class: "notice", text: E.t("s.expired") }) : null;
     return h("div", { class: "signin" }, h("h2", { text: E.t("s.title"), "data-i": "s.title" }), expired, seg, body, go, err,
-      h("p", { style: "margin-top:14px" }, h("button", { class: "link", "data-i": "s.new", text: E.t("s.new"), on: { click: registerModal } })));
+      h("p", { style: "margin-top:14px" }, h("button", { class: "link", "data-i": "s.new", text: E.t("s.new"), on: { click: registerModal } })),
+      farmerNote);
   }
 
   function registerModal() {
@@ -160,7 +164,7 @@
   /* already signed in? go straight to the right dashboard */
   function start() {
     E.config().then(function (c) {
-      cfg = c;
+      cfg = c; setFarmerNote();
       if (E.session.token() && !/expired=1/.test(w.location.search)) {
         E.api("/auth/me").then(function (j) { w.location.replace(E.home(j.user.role)); }).catch(function () { page(); });
       } else { page(); }

@@ -112,6 +112,7 @@
       var u = j.user;
       E.session.set(E.session.token(), u);
       if (roles.indexOf(u.role) < 0) { w.location.replace(E.home(u.role)); throw new Error("wrong role"); }
+      if (u.must_change_password && E.forceChange) { E.forceChange(); return new Promise(function () {}); }
       return u;
     });
   };
@@ -145,28 +146,28 @@
     },
     rw: {
       "e.wrong phone or password": "Nimero ya telefone cyangwa ijambo ry'ibanga si byo.",
-      "e.too many attempts": "Mwagerageje inshuro nyinshi. Mutegereze iminota mike mongere mugerageze.",
-      "e.duplicate": "Iyi nimero cyangwa Irangamuntu isanzwe yanditse.",
+      "e.too many attempts": "Wagerageje inshuro nyinshi. Tegereza iminota mike, hanyuma wongere ugerageze.",
+      "e.duplicate": "Iyi nimero cyangwa Indangamuntu isanzwe yanditse.",
       "e.bad_phone": "Andika nimero y'u Rwanda nyayo, urugero 0788123456.",
-      "e.bad_id": "Irangamuntu igomba kuba imibare 16.",
+      "e.bad_id": "Indangamuntu igomba kuba imibare 16.",
       "e.bad_name": "Andika amazina yombi.",
       "e.weak_password": "Ijambo ry'ibanga rigomba kuba nibura inyuguti 8.",
       "e.no_consent": "Ugomba kwemera ko E-Soko ibika amakuru yawe.",
-      "e.farmer_not_active": "Uyu muhinzi ntarishyura amafaranga yo kwiyandikisha.",
+      "e.farmer_not_active": "Uyu muhinzi ntaratanga amafaranga yo kwiyandikisha.",
       "e.buyer_not_active": "Konti yawe ntirakora. Banza wemeze ubwishyu bwo kwiyandikisha.",
       "e.not_available": "Hari undi muntu umaze kugura iki gicuruzwa.",
       "e.bad_quantity": "Andika umubare nyawo.",
       "e.bad_price": "Andika igiciro nyacyo.",
-      "e.tag_already_listed": "Iyi nomero y'ikarita y'itungo isanzwe yanditse.",
+      "e.tag_already_listed": "Iyi nimero y'ikarita y'itungo isanzwe yanditse.",
       "e.outside_agent_area": "Ibi biri hanze y'umurenge wawe.",
-      "e.agent_has_no_area": "Konti yawe nta gace ifite. Babaze umuyobozi.",
+      "e.agent_has_no_area": "Konti yawe nta gace ifite. Baza umuyobozi.",
       "e.forbidden": "Ntabwo wemerewe gukora ibi.",
       "e.new_price_must_be_lower": "Igiciro gishya kigomba kuba munsi y'icyanditswe.",
-      "e.not_ready_for_verification": "Iki gicuruzwa ntikiri gutegereza gupimwa.",
+      "e.not_ready_for_verification": "Iki gicuruzwa ntikiri mu bitegereje gupimwa.",
       "e.order_not_verified": "Banza upime igicuruzwa.",
-      "e.permit_required": "Haburamo icyangombwa cya Leta: {names}",
+      "e.permit_required": "Hari icyangombwa cya Leta kibura: {names}",
       "e.session": "Igihe cyawe cyarangiye. Ongera winjire.",
-      "e.network": "Nta murongo wa internet. Gerageza nanone."
+      "e.network": "Nta murongo wa interineti. Gerageza nanone."
     },
     fr: {
       "e.wrong phone or password": "Numéro de téléphone ou mot de passe incorrect.",
@@ -222,18 +223,18 @@
       product: "Product", code: "Code", amount: "Amount", reference: "Reference", actions: "Actions"
     },
     rw: {
-      app: "E-Soko", out: "Sohoka", loading: "Biraje…", retry: "Gerageza nanone", save: "Bika", cancel: "Reka", close: "Funga",
-      ok: "Sawa", search: "Shakisha", refresh: "Vugurura", none: "Nta kintu kirimo.", back: "Subira inyuma", prev: "Ibibanza", next: "Ibikurikira",
+      app: "E-Soko", out: "Sohoka", loading: "Tegereza…", retry: "Gerageza nanone", save: "Bika", cancel: "Reka", close: "Funga",
+      ok: "Sawa", search: "Shakisha", refresh: "Vugurura", none: "Nta kintu kirimo.", back: "Subira inyuma", prev: "Ibibanjirije", next: "Ibikurikira",
       yes: "Yego", no: "Oya", test_bar: "SISITEMU Y'IKIZAMINI: ubwishyu n'ubutumwa ni ibyo kwigana. Nta mafaranga nyayo anyura hano.",
       "role.farmer": "Umuhinzi / Umworozi", "role.buyer": "Umuguzi", "role.agent": "Agent", "role.gate": "Ushinzwe irembo ry'isoko",
       "role.admin": "Umuyobozi (Admin)", "role.superadmin": "Nyiri sisitemu (SuperAdmin)", "role.government": "Leta",
-      "ps.Available": "Ritegereje umuguzi", "ps.Reserved": "Riri kwishyurwa", "ps.Sold": "Waguzwe, uzane kwa Agent", "ps.Verified": "Cyemejwe",
-      "ps.PaidOut": "Wishyuwe", "ps.Unsold": "Ntiwaguzwe", "ps.Rejected": "Cyanzwe", "ps.Expired": "Cyarangiye",
-      "os.awaiting_payment": "Utegereje kwishyura", "os.funded": "Wishyuwe, utegereje Agent", "os.revision_pending": "Agent yahinduye igiciro",
+      "ps.Available": "Kitegereje umuguzi", "ps.Reserved": "Kiri kwishyurwa", "ps.Sold": "Cyaguzwe, kizane kwa Agent", "ps.Verified": "Cyemejwe",
+      "ps.PaidOut": "Cyishyuwe", "ps.Unsold": "Kitaguzwe", "ps.Rejected": "Cyanzwe", "ps.Expired": "Cyarangiye",
+      "os.awaiting_payment": "Utegereje kwishyura", "os.funded": "Wishyuye, utegereje Agent", "os.revision_pending": "Agent yahinduye igiciro",
       "os.verified": "Byemejwe, uze gufata", "os.completed": "Byarangiye", "os.cancelled": "Byahagaritswe", "os.refunded": "Wasubijwe amafaranga",
       "grp.crop": "Ibihingwa", "grp.livestock": "Amatungo", all: "Byose", village: "Umudugudu", sector: "Umurenge", district: "Akarere",
-      phone: "Nimero ya telefone", name: "Amazina yombi", qty: "Umubare", price: "Igiciro", total: "Yose", status: "Imiterere", date: "Itariki",
-      product: "Igicuruzwa", code: "Kode", amount: "Amafaranga", reference: "Nomero", actions: "Ibyo gukora"
+      phone: "Nimero ya telefone", name: "Amazina yombi", qty: "Umubare", price: "Igiciro", total: "Igiteranyo", status: "Imiterere", date: "Itariki",
+      product: "Igicuruzwa", code: "Kode", amount: "Amafaranga", reference: "Nimero", actions: "Ibyo gukora"
     },
     fr: {
       app: "E-Soko", out: "Déconnexion", loading: "Chargement…", retry: "Réessayer", save: "Enregistrer", cancel: "Annuler", close: "Fermer",
@@ -299,13 +300,12 @@
     setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, bad ? 6000 : 3200);
   };
   /** Opens a dialog. build(close) returns the content node. Returns close(). */
-  E.modal = function (title, build) {
+  E.modal = function (title, build, locked) {
     var bg = E.h("div", { class: "modal-bg" });
     var box = E.h("div", { class: "modal", role: "dialog", "aria-modal": "true", "aria-label": title });
     function close() { if (bg.parentNode) bg.parentNode.removeChild(bg); document.removeEventListener("keydown", onKey); }
     function onKey(e) { if (e.key === "Escape") close(); }
-    bg.addEventListener("mousedown", function (e) { if (e.target === bg) close(); });
-    document.addEventListener("keydown", onKey);
+    if (!locked) { bg.addEventListener("mousedown", function (e) { if (e.target === bg) close(); }); document.addEventListener("keydown", onKey); }
     E.add(box, [E.h("h3", { text: title }), build(close)]);
     bg.appendChild(box); document.body.appendChild(bg);
     var first = box.querySelector("input, select, button"); if (first) first.focus();

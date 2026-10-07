@@ -212,7 +212,7 @@ class CheckupTests(unittest.TestCase):
         self.assertEqual(s["totals"]["unsold_items"], 2)
         msgs = [r["text"] for r in c.execute("SELECT text FROM notifications")]
         self.assertEqual(len(msgs), 2)  # 1 congratulations + 1 aggregated unsold SMS
-        self.assertTrue(any("Congratulations" in m for m in msgs))
+        self.assertTrue(any("Turakwishimiye" in m for m in msgs))
         again = checkup.run_checkup(c, now=now)  # idempotent
         self.assertEqual(again["totals"]["sold_items"], 0)
         self.assertEqual(again["totals"]["unsold_items"], 0)

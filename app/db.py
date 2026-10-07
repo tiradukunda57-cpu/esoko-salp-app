@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS users(
   status TEXT NOT NULL DEFAULT 'pending_payment'
     CHECK(status IN ('pending_payment','active','suspended')),
   consent_at TEXT,
+  must_change_password INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS categories(
@@ -338,8 +339,23 @@ def connect(path=None):
     return conn
 
 
+def _has_column(conn, table, column):
+    if dialect(conn) == "postgres":
+        return conn.execute("SELECT 1 FROM information_schema.columns WHERE table_name=? AND column_name=?",
+                            (table, column)).fetchone() is not None
+    return any(r[1] == column for r in conn.execute("PRAGMA table_info(%s)" % table))
+
+
+def migrate(conn):
+    """Small, safe upgrades for databases created by an older version (hosting has no terminal)."""
+    if not _has_column(conn, "users", "must_change_password"):
+        conn.execute("ALTER TABLE users ADD COLUMN must_change_password INTEGER NOT NULL DEFAULT 0")
+        conn.commit()
+
+
 def init_db(conn):
     conn.executescript(SCHEMA)
+    migrate(conn)
     now = iso(utcnow())
     for k, v in DEFAULT_FEES.items():
         conn.execute("INSERT OR IGNORE INTO fee_config(key,value,updated_at) VALUES(?,?,?)", (k, v, now))

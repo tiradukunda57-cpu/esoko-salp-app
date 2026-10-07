@@ -18,15 +18,15 @@
     },
     rw: {
       "t.queue": "Bipimwa", "t.farmers": "Abahinzi", "t.gate": "Irembo", "t.acc": "Konti",
-      "q.none": "Nta kintu gitegereje mu gace kawe.", "q.farmer": "Umuhinzi", "q.buyer": "Umuguzi", "q.verify": "Pima", "q.handover": "Tanga wishyure", "q.docs": "Andika icyangombwa",
-      "q.missing": "Ibyangombwa bibura", "q.blocking": "bihagarika kwishyura", "q.ready": "Byapimwe: utegereje ko umuguzi aza gufata",
+      "q.none": "Nta kintu kitegereje mu gace kawe.", "q.farmer": "Umuhinzi", "q.buyer": "Umuguzi", "q.verify": "Pima", "q.handover": "Tanga kandi wishyure", "q.docs": "Andika icyangombwa",
+      "q.missing": "Ibyangombwa bibura", "q.blocking": "bihagarika kwishyura", "q.ready": "Byapimwe: bitegereje ko umuguzi aza kubifata",
       "v.title": "Pima {code}", "v.result": "Icyemezo", "v.approve": "Emeza", "v.downgrade": "Manura igiciro", "v.reject": "Anga", "v.grade": "Icyiciro", "v.weight": "Ibiro (kg)",
-      "v.newprice": "Igiciro gishya kuri buri gipimo (Frw)", "v.tag": "Nomero y'ikarita y'itungo", "v.note": "Icyitonderwa", "v.done": "Byabitswe.", "v.hand": "Gutanga byanditswe. Ubwishyu bwoherejwe.",
-      "fm.search": "Shakisha izina cyangwa telefone", "fm.register": "Andika umuhinzi", "fm.list": "Andikisha ku muhinzi", "fm.status": "Imiterere", "fm.none": "Nta muhinzi uboneka.",
-      "fm.consent": "Umuhinzi yemeye ko E-Soko ibika amakuru ye.", "fm.fee": "Umuhinzi yishyura {fee} yo kwiyandikisha kuri mobile money.", "fm.done": "Umuhinzi yanditswe.", "fm.sim": "Sisitemu y'ikizamini: wigane ubwishyu",
+      "v.newprice": "Igiciro gishya kuri buri gipimo (Frw)", "v.tag": "Nimero y'ikarita y'itungo", "v.note": "Icyitonderwa", "v.done": "Byabitswe.", "v.hand": "Gutanga byanditswe. Ubwishyu bwoherejwe.",
+      "fm.search": "Shakisha izina cyangwa telefone", "fm.register": "Andika umuhinzi", "fm.list": "Andikisha mu izina ry'umuhinzi", "fm.status": "Imiterere", "fm.none": "Nta muhinzi uboneka.",
+      "fm.consent": "Umuhinzi yemeye ko E-Soko ibika amakuru ye.", "fm.fee": "Umuhinzi yishyura {fee} yo kwiyandikisha, akoresheje mobile money.", "fm.done": "Umuhinzi yanditswe.", "fm.sim": "Sisitemu y'ikizamini: wigane ubwishyu",
       "fm.pick": "Umuhinzi", "fm.listed": "Cyanditswe. Kode: {code}",
-      "g.title": "Genzura kode y'irembo", "g.code": "Kode y'umuhinzi", "g.check": "Genzura", "g.valid": "Irakora: reka yinjire", "g.used": "Yarakoreshejwe", "g.expired": "Yararangiye",
-      "g.unknown": "Kode itazwi", "g.permit_missing": "Haburamo icyangombwa cya Leta", "g.missing": "Habura: {names}"
+      "g.title": "Genzura kode y'irembo", "g.code": "Kode y'umuhinzi", "g.check": "Genzura", "g.valid": "Kode ni nzima: emera yinjire", "g.used": "Kode yamaze gukoreshwa", "g.expired": "Kode yararangiye",
+      "g.unknown": "Kode ntiyemewe", "g.permit_missing": "Hari icyangombwa cya Leta kibura", "g.missing": "Habura: {names}"
     },
     fr: {
       "t.queue": "À vérifier", "t.farmers": "Agriculteurs", "t.gate": "Porte", "t.acc": "Compte",

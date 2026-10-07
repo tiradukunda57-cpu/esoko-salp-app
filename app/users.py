@@ -140,7 +140,7 @@ def reset_password(conn, actor, user_id):
         raise PermissionError("admin_can_only_help_agent_gate_farmer_buyer")
     alphabet = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"
     temp = "".join(secrets.choice(alphabet) for _ in range(10))
-    conn.execute("UPDATE users SET password_hash=? WHERE id=?", (hash_password(temp), user_id))
+    conn.execute("UPDATE users SET password_hash=?, must_change_password=1 WHERE id=?", (hash_password(temp), user_id))
     audit(conn, actor["id"], "user.password_reset", "user", user_id, None)
     return temp
 
@@ -155,5 +155,5 @@ def change_password(conn, user, current, new):
         raise ValueError("wrong_current_password")
     if not new or len(new) < 8 or new == current:
         raise ValueError("weak_password")
-    conn.execute("UPDATE users SET password_hash=? WHERE id=?", (hash_password(new), user["id"]))
+    conn.execute("UPDATE users SET password_hash=?, must_change_password=0 WHERE id=?", (hash_password(new), user["id"]))
     audit(conn, user["id"], "user.change_password", "user", user["id"])

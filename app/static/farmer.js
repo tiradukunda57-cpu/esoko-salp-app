@@ -17,14 +17,14 @@
     },
     rw: {
       "t.ov": "Incamake", "t.sell": "Gurisha", "t.items": "Ibyanjye", "t.docs": "Ibyangombwa", "t.acc": "Konti",
-      "f.hello": "Muraho, {name}", "f.paid": "Wishyuwe", "f.waiting": "Utegereje kwishyurwa", "f.fees": "Amafaranga azakurwaho", "f.listed": "Ibigurishwa",
-      "f.codes": "Kode z'irembo ry'isoko", "f.codes_h": "Erekana iyi kode ku irembo ry'isoko ku bitaguzwe.", "f.nocodes": "Nta kode zihari ubu.", "f.valid": "igeza ku",
+      "f.hello": "Muraho, {name}", "f.paid": "Wamaze kwishyurwa", "f.waiting": "Utegereje kwishyurwa", "f.fees": "Amafaranga azakurwaho", "f.listed": "Ibigurishwa",
+      "f.codes": "Kode z'irembo ry'isoko", "f.codes_h": "Erekana iyi kode ku irembo ry'isoko ku bicuruzwa bitaguzwe.", "f.nocodes": "Nta kode zihari ubu.", "f.valid": "igeza ku itariki",
       "f.pay": "Ubwishyu buheruka", "f.nopay": "Nta bwishyu burabaho.",
       "sl.title": "Andikisha igicuruzwa", "sl.cat": "Urigurisha iki?", "sl.qty": "Umubare", "sl.price": "Igiciro kuri buri gipimo (Frw)", "sl.total": "Yose hamwe",
-      "sl.tag": "Nomero y'ikarita y'itungo", "sl.sex": "Igitsina", "sl.female": "Ingore", "sl.male": "Ingabo", "sl.age": "Imyaka (amezi)", "sl.notes": "Icyitonderwa", "sl.go": "Andikisha",
-      "sl.done": "Cyanditswe. Kode: {code}. Kizane kwa Agent nikigurwa.", "sl.blocked": "Haburamo ibyangombwa: {names}. Saba Agent akibanze kubyandika.",
+      "sl.tag": "Nimero y'ikarita y'itungo", "sl.sex": "Igitsina", "sl.female": "Ingore", "sl.male": "Ingabo", "sl.age": "Imyaka y'itungo (amezi)", "sl.notes": "Icyitonderwa", "sl.go": "Andikisha",
+      "sl.done": "Cyanditswe. Kode: {code}. Nikigurwa, kizane kwa Agent.", "sl.blocked": "Hari ibyangombwa bibura: {names}. Saba Agent kubyandika mbere.",
       "it.code": "Kode", "it.what": "Igicuruzwa", "it.qty": "Umubare", "it.price": "Igiciro", "it.status": "Imiterere", "it.date": "Cyanditswe",
-      "dc.h": "Ibyangombwa bya Leta byanditswe kuri wowe", "dc.none": "Nta cyangombwa cyanditswe.", "dc.ref": "Nomero", "dc.until": "Kigeza ku", "dc.for": "Ku"
+      "dc.h": "Ibyangombwa bya Leta byanditswe kuri wowe", "dc.none": "Nta cyangombwa cyanditswe.", "dc.ref": "Nimero", "dc.until": "Gifite agaciro kugeza ku", "dc.for": "Ku"
     },
     fr: {
       "t.ov": "Aperçu", "t.sell": "Vendre", "t.items": "Mes articles", "t.docs": "Documents", "t.acc": "Compte",

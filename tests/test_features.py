@@ -195,6 +195,23 @@ class RoleTests(unittest.TestCase):
         with self.assertRaises(PermissionError):
             users.reset_password(c, dict(admin), sa["id"])
 
+    def test_temp_password_must_be_changed_and_old_db_is_migrated(self):
+        import sqlite3
+        from app import db
+        c, loc, sa, agent, farmer, buyer = world()
+        self.assertFalse(users.get_user(c, agent["id"])["must_change_password"])
+        temp = users.reset_password(c, dict(sa), agent["id"])
+        self.assertTrue(users.get_user(c, agent["id"])["must_change_password"])
+        users.change_password(c, dict(users.get_user(c, agent["id"])), temp, "brand-new-pass1")
+        self.assertFalse(users.get_user(c, agent["id"])["must_change_password"])
+        old = sqlite3.connect(":memory:")
+        old.row_factory = sqlite3.Row
+        old.execute("CREATE TABLE users(id INTEGER PRIMARY KEY, role TEXT, name TEXT, phone TEXT)")
+        self.assertFalse(db._has_column(old, "users", "must_change_password"))
+        db.migrate(old)
+        self.assertTrue(db._has_column(old, "users", "must_change_password"))
+        db.migrate(old)
+
 
 if __name__ == "__main__":
     unittest.main()

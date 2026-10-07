@@ -5,7 +5,7 @@
 
   E.i18n({
     en: {
-      "acc.title": "Your account", "acc.password": "Change password", "acc.current": "Current password", "acc.new": "New password (8+ characters)",
+      "fc.title": "Choose your own password", "fc.help": "You were given a temporary password. Choose your own password to continue.", "fc.temp": "Temporary password", "acc.title": "Your account", "acc.password": "Change password", "acc.current": "Current password", "acc.new": "New password (8+ characters)",
       "acc.done": "Password changed.", "acc.err.wrong_current_password": "The current password is not correct.", "acc.err.weak_password": "Use at least 8 characters, different from the old one.",
       "acc.sms": "You sign in with an SMS code, so there is no password to change.",
       "ov.group": "Show", "ov.days": "Period", "ov.district": "District", "ov.sector": "Sector", "ov.d7": "Last 7 days", "ov.d30": "Last 30 days", "ov.d90": "Last 90 days", "ov.d365": "Last year",
@@ -21,23 +21,23 @@
       "subject.user": "Person", "subject.product": "Product"
     },
     rw: {
-      "acc.title": "Konti yawe", "acc.password": "Hindura ijambo ry'ibanga", "acc.current": "Ijambo ry'ibanga risanzwe", "acc.new": "Ijambo ry'ibanga rishya (inyuguti 8+)",
-      "acc.done": "Ijambo ry'ibanga rihinduwe.", "acc.err.wrong_current_password": "Ijambo ry'ibanga risanzwe si ryo.", "acc.err.weak_password": "Koresha nibura inyuguti 8, zitandukanye n'izisanzwe.",
-      "acc.sms": "Winjira ukoresheje kode ya SMS, ntaho ufite ijambo ry'ibanga ryo guhindura.",
+      "fc.title": "Hitamo ijambo ry'ibanga ryawe", "fc.help": "Wahawe ijambo ry'ibanga ry'agateganyo. Hitamo irindi ryawe kugira ngo ukomeze.", "fc.temp": "Ijambo ry'ibanga ry'agateganyo", "acc.title": "Konti yawe", "acc.password": "Hindura ijambo ry'ibanga", "acc.current": "Ijambo ry'ibanga risanzwe", "acc.new": "Ijambo ry'ibanga rishya (inyuguti 8+)",
+      "acc.done": "Ijambo ry'ibanga rihinduwe.", "acc.err.wrong_current_password": "Ijambo ry'ibanga risanzwe si ryo.", "acc.err.weak_password": "Koresha nibura inyuguti 8, zitandukanye n'izo wakoreshaga.",
+      "acc.sms": "Winjira ukoresheje kode ya SMS, nta jambo ry'ibanga ufite ryo guhindura.",
       "ov.group": "Erekana", "ov.days": "Igihe", "ov.district": "Akarere", "ov.sector": "Umurenge", "ov.d7": "Iminsi 7 ishize", "ov.d30": "Iminsi 30 ishize", "ov.d90": "Iminsi 90 ishize", "ov.d365": "Umwaka ushize",
       "ov.livestock": "Amatungo", "ov.crops": "Ibihingwa", "ov.heads_listed": "Amatungo yanditswe", "ov.heads_available": "Amatungo ategereje abaguzi", "ov.heads_sold": "Amatungo yaguzwe",
       "ov.listed": "Ibyanditswe", "ov.available": "Bitegereje abaguzi", "ov.sold": "Byaguzwe", "ov.unsold": "Ibitaguzwe", "ov.value": "Agaciro k'ibyaguzwe", "ov.farmers": "Abahinzi", "ov.keepers": "Aborozi",
-      "ov.listed_q": "Byanditswe", "ov.avail_q": "Biriho", "ov.sold_q": "Byaguzwe", "ov.avg": "Igiciro rusange", "ov.nolist": "Nta cyanditswe muri iki gihe.",
-      "ov.sex": "Amatungo ku gitsina", "ov.female": "Ingore", "ov.male": "Ingabo", "ov.village": "Ku mudugudu", "ov.daily": "Ibyanditswe buri munsi", "ov.items": "byanditswe",
-      "permit.title": "Andika icyangombwa", "permit.type": "Icyangombwa", "permit.ref": "Nomero y'icyangombwa", "permit.valid": "Kigeza ku itariki", "permit.note": "Icyitonderwa",
+      "ov.listed_q": "Byanditswe", "ov.avail_q": "Bihari", "ov.sold_q": "Byaguzwe", "ov.avg": "Impuzandengo y'igiciro", "ov.nolist": "Nta cyanditswe muri iki gihe.",
+      "ov.sex": "Amatungo hakurikijwe igitsina", "ov.female": "Ingore", "ov.male": "Ingabo", "ov.village": "Ku mudugudu", "ov.daily": "Ibyanditswe buri munsi", "ov.items": "byanditswe",
+      "permit.title": "Andika icyangombwa", "permit.type": "Icyangombwa", "permit.ref": "Nimero y'icyangombwa", "permit.valid": "Gifite agaciro kugeza ku itariki", "permit.note": "Icyitonderwa",
       "permit.none": "Nta tegeko ry'ibyangombwa riraboneka.", "permit.done": "Icyangombwa cyanditswe.", "permit.hint": "Andika gusa icyangombwa wabonye.",
-      "rules.name": "Itegeko", "rules.when": "Rigenzurwa", "rules.applies": "Rireba", "rules.state": "Imiterere", "rules.issuer": "Gitangwa na",
+      "rules.name": "Itegeko", "rules.when": "Igihe rigenzurwa", "rules.applies": "Rireba", "rules.state": "Imiterere", "rules.issuer": "Gitangwa na",
       "when.listing": "Umuhinzi yandikisha igicuruzwa", "when.purchase": "Umuguzi agura", "when.handover": "Kwishyura umuhinzi", "when.market_entry": "Kwinjira ku isoko",
-      "applies.all": "Byose", "applies.crop": "Ibihingwa byose", "applies.livestock": "Amatungo yose", "rules.blocking": "Rihagarika igikorwa", "rules.advisory": "Riragaragara gusa", "rules.off": "Rirahagaze",
+      "applies.all": "Byose", "applies.crop": "Ibihingwa byose", "applies.livestock": "Amatungo yose", "rules.blocking": "Rihagarika igikorwa", "rules.advisory": "Riragaragara gusa", "rules.off": "Ntirikora",
       "subject.user": "Umuntu", "subject.product": "Igicuruzwa"
     },
     fr: {
-      "acc.title": "Votre compte", "acc.password": "Changer le mot de passe", "acc.current": "Mot de passe actuel", "acc.new": "Nouveau mot de passe (8+ caractères)",
+      "fc.title": "Choisissez votre mot de passe", "fc.help": "Un mot de passe temporaire vous a été donné. Choisissez le vôtre pour continuer.", "fc.temp": "Mot de passe temporaire", "acc.title": "Votre compte", "acc.password": "Changer le mot de passe", "acc.current": "Mot de passe actuel", "acc.new": "Nouveau mot de passe (8+ caractères)",
       "acc.done": "Mot de passe modifié.", "acc.err.wrong_current_password": "Le mot de passe actuel est incorrect.", "acc.err.weak_password": "Au moins 8 caractères, différents de l'ancien.",
       "acc.sms": "Vous vous connectez par code SMS : il n'y a pas de mot de passe à changer.",
       "ov.group": "Afficher", "ov.days": "Période", "ov.district": "District", "ov.sector": "Secteur", "ov.d7": "7 derniers jours", "ov.d30": "30 derniers jours", "ov.d90": "90 derniers jours", "ov.d365": "Dernière année",
@@ -73,6 +73,25 @@
   };
 
   /* ------------------------------------------------------------ account panel */
+  /** Shown when a SuperAdmin/Admin gave this person a temporary password: nothing else works until they choose their own. */
+  E.forceChange = function () {
+    E.modal(E.t("fc.title"), function () {
+      var cur = h("input", { type: "password", autocomplete: "current-password" });
+      var nw = h("input", { type: "password", autocomplete: "new-password" });
+      var err = h("div", { class: "err", role: "alert" });
+      var btn = h("button", { class: "btn", text: E.t("save") });
+      var out = h("button", { class: "btn sec", text: E.t("out"), on: { click: function () { E.session.clear(); window.location.replace("/"); } } });
+      btn.addEventListener("click", function () {
+        err.textContent = "";
+        E.busy(btn, function () {
+          return E.api("/auth/change-password", { body: { current: cur.value, new: nw.value } }).then(function () { window.location.reload(); });
+        }).catch(function (e) { var k = "acc.err." + e.message; err.textContent = E.t(k) === k ? E.err(e) : E.t(k); });
+      });
+      return h("div", null, h("p", { text: E.t("fc.help") }), E.field(E.t("fc.temp"), cur), E.field(E.t("acc.new"), nw), err,
+        h("div", { class: "actions" }, out, btn));
+    }, true);
+  };
+
   E.accountPanel = function (user, canChangePassword) {
     var cur = h("input", { type: "password", autocomplete: "current-password" });
     var nw = h("input", { type: "password", autocomplete: "new-password" });

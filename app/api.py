@@ -95,7 +95,10 @@ async def _perm_error(_, exc):
     return JSONResponse({"error": str(exc) or "forbidden"}, status_code=403)
 
 
-def current_user(authorization: Optional[str] = Header(None), conn=Depends(get_conn)):
+_ALLOWED_WHILE_TEMP_PASSWORD = ("/auth/me", "/auth/change-password", "/config/public")
+
+
+def current_user(request: Request, authorization: Optional[str] = Header(None), conn=Depends(get_conn)):
     if not authorization or not authorization.lower().startswith("bearer "):
         raise HTTPException(401, "missing token")
     claims = decode_token(authorization[7:], get_settings().jwt_secret)
@@ -104,7 +107,10 @@ def current_user(authorization: Optional[str] = Header(None), conn=Depends(get_c
     row = users.get_user(conn, claims["sub"])
     if not row or row["status"] != "active":
         raise HTTPException(401, "account not active")
-    return dict(row)
+    d = dict(row)
+    if d.get("must_change_password") and request.url.path not in _ALLOWED_WHILE_TEMP_PASSWORD:
+        raise HTTPException(403, "password_change_required")
+    return d
 
 
 def require(*roles):
@@ -119,7 +125,8 @@ def public_user(u):
     u = dict(u)
     return {"id": u["id"], "role": u["role"], "name": u["name"], "phone": u["phone"], "status": u["status"],
             "language": u["language"], "location_id": u["location_id"],
-            "national_id_last4": u.get("national_id_last4"), "created_at": u.get("created_at")}
+            "national_id_last4": u.get("national_id_last4"), "created_at": u.get("created_at"),
+            "must_change_password": bool(u.get("must_change_password"))}
 
 
 # ------------------------------------------------------------------ models

@@ -15,11 +15,11 @@
     },
     rw: {
       "t.market": "Isoko", "t.orders": "Ibyo naguze", "t.acc": "Konti",
-      "m.cat": "Igicuruzwa", "m.grp": "Ubwoko", "m.village": "Umudugudu", "m.where": "Aho biri", "m.detail": "Ibisobanuro", "m.buy": "Gura", "m.none": "Nta kigurishwa muri ibi bishakiro.",
-      "m.confirm": "Gura {item} kuri {total}? Amafaranga abikwa neza kugeza Agent apimye ibicuruzwa.", "m.pay": "Emeza ubwishyu kuri telefone yawe ({total}).",
+      "m.cat": "Igicuruzwa", "m.grp": "Ubwoko", "m.village": "Umudugudu", "m.where": "Aho biri", "m.detail": "Ibisobanuro", "m.buy": "Gura", "m.none": "Nta gicuruzwa kiboneka hakurikijwe ibyo washatse.",
+      "m.confirm": "Gura {item} kuri {total}? Amafaranga abikwa neza kugeza igihe Agent azapimira ibicuruzwa.", "m.pay": "Emeza ubwishyu kuri telefone yawe ({total}).",
       "m.female": "ingore", "m.male": "ingabo", "m.months": "amezi", "m.grade": "Icyiciro",
-      "o.spent": "Wakoresheje (byarangiye)", "o.progress": "Bikomeje", "o.answer": "Bikeneye igisubizo cyawe", "o.none": "Nta cyo uraguza.",
-      "o.accept": "Emera igiciro gishya", "o.decline": "Anga usubizwe amafaranga", "o.newtotal": "Yose nshya: {total}", "o.sim": "Sisitemu y'ikizamini: wigane ko nemeje ubwishyu", "o.simdone": "Ubwishyu bwemejwe.",
+      "o.spent": "Amafaranga wakoresheje (byarangiye)", "o.progress": "Bikomeje", "o.answer": "Bikeneye igisubizo cyawe", "o.none": "Nta cyo uragura.",
+      "o.accept": "Emera igiciro gishya", "o.decline": "Anga usubizwe amafaranga", "o.newtotal": "Igiteranyo gishya: {total}", "o.sim": "Sisitemu y'ikizamini: wigane ko nemeje ubwishyu", "o.simdone": "Ubwishyu bwemejwe.",
       "o.simnone": "Nta bwishyu butegereje.", "o.collect": "Byemejwe. Genda ubifate kwa Agent."
     },
     fr: {
