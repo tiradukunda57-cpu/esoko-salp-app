@@ -124,6 +124,25 @@ def set_user_status(conn, actor, user_id, status):
     audit(conn, actor["id"], "user.status", "user", user_id, {"status": status})
 
 
+def reset_password(conn, actor, user_id):
+    """SuperAdmin sets a NEW temporary password for someone. Stored passwords are one-way hashes and can never be
+    read back, so a reset is the only safe way to hand someone access. The new password is returned once."""
+    import secrets
+    from .security import hash_password
+    if actor["role"] != "superadmin":
+        raise PermissionError("forbidden")
+    target = get_user(conn, user_id)
+    if target is None:
+        raise ValueError("not_found")
+    if target["id"] == actor["id"] or target["role"] == "superadmin":
+        raise PermissionError("cannot_change_superadmin_or_self")
+    alphabet = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+    temp = "".join(secrets.choice(alphabet) for _ in range(10))
+    conn.execute("UPDATE users SET password_hash=? WHERE id=?", (hash_password(temp), user_id))
+    audit(conn, actor["id"], "user.password_reset", "user", user_id, None)
+    return temp
+
+
 def change_password(conn, user, current, new):
     """Staff and buyers change their own password. The current one must be right."""
     from .security import verify_password

@@ -176,6 +176,19 @@ class RoleTests(unittest.TestCase):
         with self.assertRaises(PermissionError):
             users.create_staff(c, dict(admin), role="government", name="X Y", phone="0788000052", password="govpass123")
 
+    def test_password_reset_only_superadmin_and_hash_stays_hashed(self):
+        from app.security import verify_password
+        c, loc, sa, agent, farmer, buyer = world()
+        temp = users.reset_password(c, dict(sa), agent["id"])
+        row = users.get_user(c, agent["id"])
+        self.assertGreaterEqual(len(temp), 10)
+        self.assertNotEqual(row["password_hash"], temp)
+        self.assertTrue(verify_password(temp, row["password_hash"]))
+        with self.assertRaises(PermissionError):
+            users.reset_password(c, dict(agent), buyer)
+        with self.assertRaises(PermissionError):
+            users.reset_password(c, dict(sa), sa["id"])
+
 
 if __name__ == "__main__":
     unittest.main()

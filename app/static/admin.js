@@ -8,7 +8,7 @@
       "t.ov": "Overview", "t.people": "People", "t.fees": "Fees", "t.cat": "Products", "t.rules": "Gov. rules", "t.places": "Villages", "t.tools": "Test tools", "t.data": "Database", "t.audit": "Activity log", "t.acc": "Account",
       "a.users": "Accounts", "a.gmv": "Sales completed", "a.reg": "Registration fees", "a.comm": "Commission", "a.fees": "Listing and gate fees collected", "a.accr": "Fees waiting to be collected", "a.failed": "Failed payments",
       "a.items": "Items by state",
-      "p.role": "Role", "p.all": "All roles", "p.q": "Search name or phone", "p.add": "Add staff", "p.suspend": "Suspend", "p.activate": "Activate", "p.pw": "Password (8+ characters)", "p.area": "Area (for Agents)",
+      "p.role": "Role", "p.all": "All roles", "p.q": "Search name or phone", "p.add": "Add staff", "p.reset": "New password", "p.resetq": "Set a new temporary password for this person? The old one stops working.", "p.resetdone": "New password (shown only now - write it down and give it to the person):", "p.suspend": "Suspend", "p.activate": "Activate", "p.pw": "Password (8+ characters)", "p.area": "Area (for Agents)",
       "p.created": "Staff account created.", "p.permit": "Record document",
       "fe.registration_fee": "Registration fee (Frw)", "fe.listing_fee": "Listing fee (Frw)", "fe.commission_bps": "Commission (basis points: 200 = 2%)", "fe.clearance_fee": "Market gate code fee (Frw)",
       "fe.saved": "Saved.", "fe.readonly": "Only the SuperAdmin can change fees.",
@@ -29,7 +29,7 @@
       "t.ov": "Incamake", "t.people": "Abantu", "t.fees": "Amafaranga", "t.cat": "Ibicuruzwa", "t.rules": "Amategeko ya Leta", "t.places": "Imidugudu", "t.tools": "Ibikoresho by'ikizamini", "t.data": "Database", "t.audit": "Ibyakozwe", "t.acc": "Konti",
       "a.users": "Konti", "a.gmv": "Ibyagurishijwe byarangiye", "a.reg": "Amafaranga yo kwiyandikisha", "a.comm": "Komisiyo", "a.fees": "Amafaranga y'ibyanditswe n'irembo yakusanyijwe", "a.accr": "Amafaranga ategereje gukusanywa", "a.failed": "Ubwishyu bwanze",
       "a.items": "Ibicuruzwa ukurikije imiterere",
-      "p.role": "Uruhare", "p.all": "Uruhare rwose", "p.q": "Shakisha izina cyangwa telefone", "p.add": "Ongeraho umukozi", "p.suspend": "Hagarika", "p.activate": "Subiza ku murongo", "p.pw": "Ijambo ry'ibanga (inyuguti 8+)", "p.area": "Agace (ku ba Agent)",
+      "p.role": "Uruhare", "p.all": "Uruhare rwose", "p.q": "Shakisha izina cyangwa telefone", "p.add": "Ongeraho umukozi", "p.reset": "Ijambo ry'ibanga rishya", "p.resetq": "Shyiraho ijambo ry'ibanga rishya ry'agateganyo kuri uyu muntu? Irya mbere rizahagarara gukora.", "p.resetdone": "Ijambo ry'ibanga rishya (rigaragara ubu gusa - ryandike, urihe uwo muntu):", "p.suspend": "Hagarika", "p.activate": "Subiza ku murongo", "p.pw": "Ijambo ry'ibanga (inyuguti 8+)", "p.area": "Agace (ku ba Agent)",
       "p.created": "Konti y'umukozi yafunguwe.", "p.permit": "Andika icyangombwa",
       "fe.registration_fee": "Amafaranga yo kwiyandikisha (Frw)", "fe.listing_fee": "Amafaranga yo kwandikisha igicuruzwa (Frw)", "fe.commission_bps": "Komisiyo (basis points: 200 = 2%)", "fe.clearance_fee": "Amafaranga ya kode y'irembo (Frw)",
       "fe.saved": "Byabitswe.", "fe.readonly": "SuperAdmin wenyine ashobora guhindura amafaranga.",
@@ -50,7 +50,7 @@
       "t.ov": "Aperçu", "t.people": "Personnes", "t.fees": "Frais", "t.cat": "Produits", "t.rules": "Règles de l'État", "t.places": "Villages", "t.tools": "Outils de test", "t.data": "Base de données", "t.audit": "Journal", "t.acc": "Compte",
       "a.users": "Comptes", "a.gmv": "Ventes terminées", "a.reg": "Frais d'inscription", "a.comm": "Commission", "a.fees": "Frais d'annonce et de porte perçus", "a.accr": "Frais en attente de perception", "a.failed": "Paiements échoués",
       "a.items": "Articles par état",
-      "p.role": "Rôle", "p.all": "Tous les rôles", "p.q": "Rechercher nom ou téléphone", "p.add": "Ajouter du personnel", "p.suspend": "Suspendre", "p.activate": "Réactiver", "p.pw": "Mot de passe (8+ caractères)", "p.area": "Zone (pour les agents)",
+      "p.role": "Rôle", "p.all": "Tous les rôles", "p.q": "Rechercher nom ou téléphone", "p.add": "Ajouter du personnel", "p.reset": "Nouveau mot de passe", "p.resetq": "Définir un nouveau mot de passe temporaire ? L'ancien ne fonctionnera plus.", "p.resetdone": "Nouveau mot de passe (affiché une seule fois) :", "p.suspend": "Suspendre", "p.activate": "Réactiver", "p.pw": "Mot de passe (8+ caractères)", "p.area": "Zone (pour les agents)",
       "p.created": "Compte du personnel créé.", "p.permit": "Enregistrer un document",
       "fe.registration_fee": "Frais d'inscription (Frw)", "fe.listing_fee": "Frais d'annonce (Frw)", "fe.commission_bps": "Commission (points de base : 200 = 2 %)", "fe.clearance_fee": "Frais du code de porte (Frw)",
       "fe.saved": "Enregistré.", "fe.readonly": "Seul le SuperAdmin peut modifier les frais.",
@@ -101,11 +101,23 @@
             var a = h("div", { class: "actions" });
             if (u.status === "active") a.appendChild(h("button", { class: "btn small danger", text: E.t("p.suspend"), on: { click: function () { setStatus(u, "suspended"); } } }));
             else a.appendChild(h("button", { class: "btn small", text: E.t("p.activate"), on: { click: function () { setStatus(u, "active"); } } }));
+            if (isSuper) a.appendChild(h("button", { class: "btn small sec", text: E.t("p.reset"), on: { click: function () { resetPw(u); } } }));
             if (u.role === "farmer" || u.role === "buyer") a.appendChild(h("button", { class: "btn small sec", text: E.t("p.permit"), on: { click: function () { E.permitModal({ subject: "user", user_id: u.id, role: u.role }); } } }));
             return a;
           } }
         ], rows));
       }).catch(fail(list));
+    }
+    function resetPw(u) {
+      E.confirm(E.t("p.reset"), E.t("p.resetq") + " (" + u.name + ", " + u.phone + ")", E.t("p.reset")).then(function (yes) {
+        if (!yes) return;
+        E.api("/admin/users/" + u.id + "/reset-password", { body: {} }).then(function (r) {
+          E.modal(E.t("p.reset"), function (close) {
+            return h("div", null, h("p", { text: E.t("p.resetdone") }), h("p", null, h("strong", { class: "mono", style: "font-size:1.4rem;user-select:all", text: r.password })),
+              h("div", { class: "actions" }, h("button", { class: "btn", text: "OK", on: { click: close } })));
+          });
+        }).catch(function (e) { E.toast(E.err(e), true); });
+      });
     }
     function setStatus(u, s) { E.api("/admin/users/" + u.id + "/status", { body: { status: s } }).then(load).catch(function (e) { E.toast(E.err(e), true); }); }
     role.addEventListener("change", load);

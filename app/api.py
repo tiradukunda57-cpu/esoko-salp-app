@@ -335,6 +335,17 @@ def admin_user_status(user_id: int, body: StatusIn, user=Depends(require("admin"
     return {"ok": True}
 
 
+@app.post("/admin/users/{user_id}/reset-password")
+def admin_reset_password(user_id: int, user=Depends(require("superadmin")), conn=Depends(get_conn)):
+    try:
+        temp = users.reset_password(conn, user, user_id)
+    except ValueError:
+        raise HTTPException(404, "not found")
+    except PermissionError:
+        raise HTTPException(403, "forbidden")
+    return {"password": temp}
+
+
 @app.get("/admin/fees")
 def get_fees(user=Depends(require("admin", "superadmin")), conn=Depends(get_conn)):
     return fees.all_fees(conn)
