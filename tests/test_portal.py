@@ -46,6 +46,19 @@ class OtpTests(unittest.TestCase):
         self.assertFalse(portal.request_otp(c, "0788000003", now=now))        # 4th within 10 min is refused
 
 
+class OtpHintTests(unittest.TestCase):
+    def test_test_system_explains_why_no_code(self):
+        from app import users
+        c, loc, sa, agent, farmer, buyer = world()
+        self.assertEqual(portal.explain_refusal(c, "0788999999"), "not_registered")
+        self.assertEqual(portal.explain_refusal(c, "0788000002"), "staff_use_password")
+        self.assertEqual(portal.explain_refusal(c, "12"), "bad_phone")
+        r = users.register_user(c, role="farmer", name="Pending Person", phone="0788555111",
+                                national_id="1199880012300000", location_id=loc)
+        self.assertEqual(r["status"], "pending_payment")
+        self.assertEqual(portal.explain_refusal(c, "0788555111"), "pending_payment")
+
+
 class PortalTests(unittest.TestCase):
     def test_farmer_overview(self):
         c, loc, sa, agent, farmer, buyer = world()

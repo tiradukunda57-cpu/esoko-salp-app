@@ -606,8 +606,11 @@ class MyListingIn(BaseModel):
 
 @app.post("/auth/request-otp")
 def request_otp(body: OtpRequestIn, conn=Depends(get_conn)):
-    portal.request_otp(conn, body.phone)  # same answer whether or not the number exists
-    return {"message": "If this number is registered, a code was sent by SMS."}
+    sent = portal.request_otp(conn, body.phone)  # same answer whether or not the number exists
+    out = {"message": "If this number is registered, a code was sent by SMS."}
+    if not sent and not get_settings().is_live:
+        out["test_hint"] = portal.explain_refusal(conn, body.phone)  # the live system never says why
+    return out
 
 
 @app.post("/auth/verify-otp")

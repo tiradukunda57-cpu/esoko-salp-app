@@ -37,6 +37,24 @@ def request_otp(conn, phone, now=None):
     return True
 
 
+def explain_refusal(conn, phone, now=None):
+    """TEST SYSTEM ONLY (never sent on the live system): why no code was sent, so testers are not left guessing."""
+    now = now or utcnow()
+    p = normalize_phone(phone)
+    if not p:
+        return "bad_phone"
+    user = get_user_by_phone(conn, p)
+    if not user:
+        return "not_registered"
+    if user["role"] not in ("farmer", "buyer"):
+        return "staff_use_password"
+    if user["status"] == "pending_payment":
+        return "pending_payment"
+    if user["status"] != "active":
+        return "suspended"
+    return "too_many_requests"
+
+
 def verify_otp(conn, phone, code, now=None):
     """Returns the user row, or None. The caller must COMMIT even on failure so the attempt counter is kept."""
     now = now or utcnow()

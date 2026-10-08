@@ -11,7 +11,7 @@
       "s.title": "Sign in", "s.pw": "Password", "s.sms": "SMS code", "s.phone": "Phone number", "s.password": "Password", "s.in": "Sign in",
       "s.sendcode": "Send me a code", "s.code": "6-digit code", "s.verify": "Verify and sign in", "s.sent": "If this number is registered, a code was sent by SMS.",
       "s.hint_pw": "Buyers, Agents, administrators and government.", "s.hint_sms": "Farmers and buyers: we text you a 6-digit code.",
-      "s.new": "New buyer? Create an account", "s.farmer": "Farmers: you register through your sector Agent, or by dialing {code} on any phone. A buyer account is the only one you can open yourself.", "s.expired": "Your session ended. Please sign in again.",
+      "hint.bad_phone": "This is not a valid Rwandan phone number.", "hint.not_registered": "TEST SYSTEM: this number is not registered. Ask an Agent to register the farmer first.", "hint.staff_use_password": "TEST SYSTEM: Agents, administrators and government sign in with a password, not an SMS code.", "hint.pending_payment": "TEST SYSTEM: registration is not paid yet. Approve the payment first (Admin > Test tools, or the Agent screen).", "hint.suspended": "TEST SYSTEM: this account is suspended.", "hint.too_many_requests": "TEST SYSTEM: too many codes requested. Wait 10 minutes.", "s.new": "New buyer? Create an account", "s.farmer": "Farmers: you register through your sector Agent, or by dialing {code} on any phone. A buyer account is the only one you can open yourself.", "s.expired": "Your session ended. Please sign in again.",
       "r.title": "Create a buyer account", "r.name": "Full name", "r.id": "National ID (16 digits)", "r.pw": "Password (8+ characters)", "r.loc": "Where you are", "r.consent": "I agree that E-Soko stores my data to run this service.",
       "r.fee": "A one-time registration fee of {fee} is paid by mobile money.", "r.go": "Register", "r.done": "Registered. Approve the mobile-money prompt on your phone (fee {fee}), then sign in.",
       "r.sim": "Test system: simulate that I approved the payment", "r.simdone": "Payment approved. You can sign in now.", "r.nodata": "Do not use a real National ID on the test system.",
@@ -26,7 +26,7 @@
       "s.title": "Injira", "s.pw": "Ijambo ry'ibanga", "s.sms": "Kode ya SMS", "s.phone": "Nimero ya telefone", "s.password": "Ijambo ry'ibanga", "s.in": "Injira",
       "s.sendcode": "Nyoherereza kode", "s.code": "Kode y'imibare 6", "s.verify": "Emeza winjire", "s.sent": "Niba iyi nimero yanditse, kode yoherejwe kuri SMS.",
       "s.hint_pw": "Abaguzi, Agents, abayobozi n'abakozi ba Leta.", "s.hint_sms": "Abahinzi n'abaguzi: tuzakwoherereza kode y'imibare 6.",
-      "s.new": "Uri umuguzi mushya? Fungura konti", "s.farmer": "Abahinzi: iyandikishe kwa Agent wo mu murenge wawe, cyangwa uhamagare {code} kuri telefone iyo ari yo yose. Konti y'umuguzi ni yo yonyine wafungura ubwawe.", "s.expired": "Igihe cyawe cyarangiye. Ongera winjire.",
+      "hint.bad_phone": "Iyi si nimero ya telefone y'u Rwanda.", "hint.not_registered": "IKIZAMINI: iyi nimero ntiyanditswe. Saba Agent yandike umuhinzi mbere.", "hint.staff_use_password": "IKIZAMINI: Agents, abayobozi n'abakozi ba Leta binjira bakoresheje ijambo ry'ibanga, si kode ya SMS.", "hint.pending_payment": "IKIZAMINI: kwiyandikisha ntikurishyurwa. Banza wemeze ubwishyu (Admin > Ibikoresho by'ikizamini, cyangwa kuri Agent).", "hint.suspended": "IKIZAMINI: iyi konti yahagaritswe.", "hint.too_many_requests": "IKIZAMINI: wasabye kode inshuro nyinshi. Tegereza iminota 10.", "s.new": "Uri umuguzi mushya? Fungura konti", "s.farmer": "Abahinzi: iyandikishe kwa Agent wo mu murenge wawe, cyangwa uhamagare {code} kuri telefone iyo ari yo yose. Konti y'umuguzi ni yo yonyine wafungura ubwawe.", "s.expired": "Igihe cyawe cyarangiye. Ongera winjire.",
       "r.title": "Fungura konti y'umuguzi", "r.name": "Amazina yombi", "r.id": "Indangamuntu (imibare 16)", "r.pw": "Ijambo ry'ibanga (inyuguti 8+)", "r.loc": "Aho uherereye", "r.consent": "Nemeye ko E-Soko ibika amakuru yanjye kugira ngo ntange serivisi.",
       "r.fee": "Wishyura inshuro imwe gusa amafaranga yo kwiyandikisha ({fee}) kuri mobile money.", "r.go": "Iyandikishe", "r.done": "Wiyandikishije. Emeza ubwishyu kuri telefone yawe ({fee}), hanyuma winjire.",
       "r.sim": "Sisitemu y'ikizamini: wigane ko nemeje ubwishyu", "r.simdone": "Ubwishyu bwemejwe. Ushobora kwinjira.", "r.nodata": "Ntukoreshe Indangamuntu nyayo kuri sisitemu y'ikizamini.",
@@ -41,7 +41,7 @@
       "s.title": "Connexion", "s.pw": "Mot de passe", "s.sms": "Code SMS", "s.phone": "Numéro de téléphone", "s.password": "Mot de passe", "s.in": "Se connecter",
       "s.sendcode": "Envoyez-moi un code", "s.code": "Code à 6 chiffres", "s.verify": "Valider et se connecter", "s.sent": "Si ce numéro est enregistré, un code a été envoyé par SMS.",
       "s.hint_pw": "Acheteurs, agents, administrateurs et État.", "s.hint_sms": "Agriculteurs et acheteurs : nous envoyons un code à 6 chiffres.",
-      "s.new": "Nouvel acheteur ? Créer un compte", "s.farmer": "Agriculteurs : inscrivez-vous auprès de l'agent de votre secteur, ou en composant {code} depuis n'importe quel téléphone. Seul le compte acheteur peut être créé par vous-même.", "s.expired": "Votre session a expiré. Reconnectez-vous.",
+      "hint.bad_phone": "Numéro de téléphone rwandais invalide.", "hint.not_registered": "TEST : ce numéro n'est pas inscrit. Demandez à un agent d'inscrire l'agriculteur.", "hint.staff_use_password": "TEST : agents, administrateurs et gouvernement se connectent avec un mot de passe.", "hint.pending_payment": "TEST : l'inscription n'est pas payée. Validez d'abord le paiement.", "hint.suspended": "TEST : ce compte est suspendu.", "hint.too_many_requests": "TEST : trop de codes demandés. Attendez 10 minutes.", "s.new": "Nouvel acheteur ? Créer un compte", "s.farmer": "Agriculteurs : inscrivez-vous auprès de l'agent de votre secteur, ou en composant {code} depuis n'importe quel téléphone. Seul le compte acheteur peut être créé par vous-même.", "s.expired": "Votre session a expiré. Reconnectez-vous.",
       "r.title": "Créer un compte acheteur", "r.name": "Nom complet", "r.id": "Identifiant national (16 chiffres)", "r.pw": "Mot de passe (8+ caractères)", "r.loc": "Votre localité", "r.consent": "J'accepte que E-Soko conserve mes données pour fournir ce service.",
       "r.fee": "Des frais d'inscription uniques de {fee} sont payés par mobile money.", "r.go": "S'inscrire", "r.done": "Inscrit. Validez l'invite mobile money sur votre téléphone ({fee}), puis connectez-vous.",
       "r.sim": "Système de test : simuler que j'ai validé le paiement", "r.simdone": "Paiement validé. Vous pouvez vous connecter.", "r.nodata": "N'utilisez pas un vrai identifiant national sur le système de test.",
@@ -95,7 +95,10 @@
       err.textContent = "";
       E.busy(go, function () {
         if (mode === "pw") return E.api("/auth/login", { body: { phone: phone.value, password: pass.value }, anon: true }).then(done);
-        if (!sent) return E.api("/auth/request-otp", { body: { phone: phone.value }, anon: true }).then(function () { sent = true; render(); E.toast(E.t("s.sent")); });
+        if (!sent) return E.api("/auth/request-otp", { body: { phone: phone.value }, anon: true }).then(function (r) {
+          if (r && r.test_hint) { err.textContent = E.t("hint." + r.test_hint); return; }
+          sent = true; render(); E.toast(E.t("s.sent"));
+        });
         return E.api("/auth/verify-otp", { body: { phone: phone.value, code: code.value }, anon: true }).then(done);
       }).catch(function (e) { err.textContent = E.err(e); });
     });
