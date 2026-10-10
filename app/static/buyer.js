@@ -6,7 +6,7 @@
   E.i18n({
     en: {
       "t.market": "Market", "t.orders": "My orders", "t.acc": "Account",
-      "m.cat": "Product", "m.grp": "Type", "m.village": "Village", "m.where": "Where", "m.detail": "Details", "m.buy": "Buy", "m.none": "Nothing for sale with these filters.",
+      "m.cat": "Product", "m.grp": "Type", "m.village": "Village", "m.sector": "Sector", "m.farmer": "Farmer / contact", "m.where": "Where", "m.detail": "Details", "m.buy": "Buy", "m.none": "Nothing for sale with these filters.",
       "m.confirm": "Buy {item} for {total}? The money is held safely until the Agent verifies the goods.", "m.pay": "Approve the mobile-money prompt on your phone ({total}).",
       "m.female": "female", "m.male": "male", "m.months": "months", "m.grade": "Grade",
       "o.spent": "Spent (completed)", "o.progress": "In progress", "o.answer": "Needs your answer", "o.none": "You have no orders yet.",
@@ -15,7 +15,7 @@
     },
     rw: {
       "t.market": "Isoko", "t.orders": "Ibyo naguze", "t.acc": "Konti",
-      "m.cat": "Igicuruzwa", "m.grp": "Ubwoko", "m.village": "Umudugudu", "m.where": "Aho biri", "m.detail": "Ibisobanuro", "m.buy": "Gura", "m.none": "Nta gicuruzwa kiboneka hakurikijwe ibyo washatse.",
+      "m.cat": "Igicuruzwa", "m.grp": "Ubwoko", "m.village": "Umudugudu", "m.sector": "Umurenge", "m.farmer": "Umuhinzi / telefone", "m.where": "Aho biri", "m.detail": "Ibisobanuro", "m.buy": "Gura", "m.none": "Nta gicuruzwa kiboneka hakurikijwe ibyo washatse.",
       "m.confirm": "Gura {item} kuri {total}? Amafaranga abikwa neza kugeza igihe Agent azapimira ibicuruzwa.", "m.pay": "Emeza ubwishyu kuri telefone yawe ({total}).",
       "m.female": "ingore", "m.male": "ingabo", "m.months": "amezi", "m.grade": "Icyiciro",
       "o.spent": "Amafaranga wakoresheje (byarangiye)", "o.progress": "Bikomeje", "o.answer": "Bikeneye igisubizo cyawe", "o.none": "Nta cyo uragura.",
@@ -24,7 +24,7 @@
     },
     fr: {
       "t.market": "Marché", "t.orders": "Mes commandes", "t.acc": "Compte",
-      "m.cat": "Produit", "m.grp": "Type", "m.village": "Village", "m.where": "Lieu", "m.detail": "Détails", "m.buy": "Acheter", "m.none": "Rien à vendre avec ces filtres.",
+      "m.cat": "Produit", "m.grp": "Type", "m.village": "Village", "m.sector": "Secteur", "m.farmer": "Agriculteur / contact", "m.where": "Lieu", "m.detail": "Détails", "m.buy": "Acheter", "m.none": "Rien à vendre avec ces filtres.",
       "m.confirm": "Acheter {item} pour {total} ? L'argent est séquestré jusqu'à la vérification par l'agent.", "m.pay": "Validez l'invite mobile money sur votre téléphone ({total}).",
       "m.female": "femelle", "m.male": "mâle", "m.months": "mois", "m.grade": "Qualité",
       "o.spent": "Dépensé (terminé)", "o.progress": "En cours", "o.answer": "Votre réponse est attendue", "o.none": "Aucune commande pour le moment.",
@@ -33,7 +33,7 @@
     }
   });
 
-  var cfg = {}, filt = { grp: "", cat: "", loc: "" };
+  var cfg = {}, filt = { grp: "", cat: "", loc: "", sector: "" };
 
   function market(main) {
     var list = h("div");
@@ -42,15 +42,21 @@
       var grp = E.select([["", E.t("all")], ["crop", E.t("grp.crop")], ["livestock", E.t("grp.livestock")]], filt.grp);
       var cat = E.select([["", E.t("all")]].concat(cats.filter(function (c) { return !filt.grp || c.grp === filt.grp; }).map(function (c) { return [c.code, E.name(c)]; })), filt.cat);
       var loc = E.select([["", E.t("all")]].concat(E.villageOptions(locs)), filt.loc);
-      grp.addEventListener("change", function () { filt = { grp: grp.value, cat: "", loc: loc.value }; market(main); });
+      var seen = {}, sectors = [];
+      locs.forEach(function (l) { if (l.sector && !seen[l.sector]) { seen[l.sector] = 1; sectors.push([l.sector, l.sector]); } });
+      sectors.sort(function (a, b) { return a[0] < b[0] ? -1 : 1; });
+      var sec = E.select([["", E.t("all")]].concat(sectors), filt.sector);
+      sec.addEventListener("change", function () { filt.sector = sec.value; load(); });
+      grp.addEventListener("change", function () { filt = { grp: grp.value, cat: "", loc: loc.value, sector: sec.value }; market(main); });
       cat.addEventListener("change", function () { filt.cat = cat.value; load(); });
       loc.addEventListener("change", function () { filt.loc = loc.value; load(); });
-      E.fill(main, [h("div", { class: "filters" }, E.field(E.t("m.grp"), grp), E.field(E.t("m.cat"), cat), E.field(E.t("m.village"), loc)), list]);
+      E.fill(main, [h("div", { class: "filters" }, E.field(E.t("m.grp"), grp), E.field(E.t("m.cat"), cat), E.field(E.t("m.sector"), sec), E.field(E.t("m.village"), loc)), list]);
       load();
       function load() {
         E.fill(list, E.loading());
         E.api("/products" + (filt.cat ? "?category=" + encodeURIComponent(filt.cat) : "") + (filt.loc ? (filt.cat ? "&" : "?") + "location_id=" + filt.loc : "")).then(function (rows) {
           if (filt.grp) rows = rows.filter(function (p) { return p.grp === filt.grp; });
+          if (filt.sector) rows = rows.filter(function (p) { return p.sector === filt.sector; });
           E.fill(list, E.table([
             { label: E.t("m.cat"), render: function (p) { return h("div", null, h("b", { text: E.name(p) }), h("div", { class: "muted small code", text: p.code })); } },
             { label: E.t("qty"), num: true, render: function (p) { return E.num(p.quantity) + " " + E.unitName(p.unit); } },
@@ -62,6 +68,7 @@
               return h("div", { class: "tags" }, t.map(function (x) { return h("span", { class: "tag", text: x }); }));
             } },
             { label: E.t("m.where"), render: function (p) { return (p.village || "-") + ", " + (p.sector || ""); } },
+            { label: E.t("m.farmer"), render: function (p) { return h("div", null, h("div", { text: p.farmer_name }), h("a", { href: "tel:" + p.farmer_phone, class: "small", text: p.farmer_phone })); } },
             { label: "", render: function (p) { return h("button", { class: "btn small", text: E.t("m.buy"), on: { click: function () { buy(p); } } }); } }
           ], rows, E.t("m.none")));
         }).catch(function (e) { E.fill(list, h("div", { class: "notice bad", text: E.err(e) })); });

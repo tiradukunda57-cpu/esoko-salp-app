@@ -8,7 +8,7 @@
       "t.ov": "Overview", "t.people": "People", "t.fees": "Fees", "t.cat": "Products", "t.rules": "Gov. rules", "t.places": "Villages", "t.tools": "Test tools", "t.data": "Database", "t.audit": "Activity log", "t.acc": "Account",
       "a.users": "Accounts", "a.gmv": "Sales completed", "a.reg": "Registration fees", "a.comm": "Commission", "a.fees": "Listing and gate fees collected", "a.accr": "Fees waiting to be collected", "a.failed": "Failed payments",
       "a.items": "Items by state",
-      "p.role": "Role", "p.all": "All roles", "p.q": "Search name or phone", "p.add": "Add staff", "p.reset": "New password", "p.resetq": "Set a new temporary password for this person? The old one stops working.", "p.resetdone": "New password (shown only now - write it down and give it to the person):", "p.suspend": "Suspend", "p.activate": "Activate", "p.pw": "Password (8+ characters)", "p.area": "Area (for Agents)",
+      "p.leads": "Not finished registering", "p.leadsnote": "These people started signing up but did not finish, or have not paid the registration fee yet. Phone them to help.", "p.lead.none": "Nobody is waiting.", "p.unf": "Stopped half-way", "p.unp": "Registered, fee not paid", "p.stopped": "Stopped at", "p.call": "Call", "p.where": "Place", "p.step.language": "Choosing language", "p.step.role": "Choosing farmer/buyer", "p.step.id": "Giving National ID", "p.step.name": "Giving name", "p.step.sector": "Choosing sector", "p.step.village": "Choosing village", "p.step.confirm": "Confirming", "p.unpaid": "Fee not paid", "p.role": "Role", "p.all": "All roles", "p.q": "Search name or phone", "p.add": "Add staff", "p.reset": "New password", "p.resetq": "Set a new temporary password for this person? The old one stops working.", "p.resetdone": "New password (shown only now - write it down and give it to the person):", "p.suspend": "Suspend", "p.activate": "Activate", "p.pw": "Password (8+ characters)", "p.area": "Area (for Agents)",
       "p.created": "Staff account created.", "p.permit": "Record document",
       "fe.registration_fee": "Registration fee (Frw)", "fe.listing_fee": "Listing fee (Frw)", "fe.commission_bps": "Commission (basis points: 200 = 2%)", "fe.clearance_fee": "Market gate code fee (Frw)",
       "fe.saved": "Saved.", "fe.readonly": "Only the SuperAdmin can change fees.",
@@ -29,7 +29,7 @@
       "t.ov": "Incamake", "t.people": "Abantu", "t.fees": "Amafaranga", "t.cat": "Ibicuruzwa", "t.rules": "Amategeko ya Leta", "t.places": "Imidugudu", "t.tools": "Ibikoresho by'ikizamini", "t.data": "Database", "t.audit": "Ibyakozwe", "t.acc": "Konti",
       "a.users": "Konti", "a.gmv": "Ibyagurishijwe byarangiye", "a.reg": "Amafaranga yo kwiyandikisha", "a.comm": "Komisiyo", "a.fees": "Amafaranga yakusanyijwe yo kwandikisha no ku irembo", "a.accr": "Amafaranga ategereje gukusanywa", "a.failed": "Ubwishyu bwanze",
       "a.items": "Ibicuruzwa ukurikije imiterere",
-      "p.role": "Uruhare", "p.all": "Uruhare rwose", "p.q": "Shakisha izina cyangwa telefone", "p.add": "Ongeraho umukozi", "p.reset": "Ijambo ry'ibanga rishya", "p.resetq": "Ushaka guha uyu muntu ijambo ry'ibanga rishya ry'agateganyo? Irisanzwe rizahita ritongera gukora.", "p.resetdone": "Ijambo ry'ibanga rishya. Rigaragara ubu gusa: ryandike, urihe uwo muntu.", "p.suspend": "Hagarika", "p.activate": "Subizaho konti", "p.pw": "Ijambo ry'ibanga (inyuguti 8+)", "p.area": "Agace (kuri Agent)",
+      "p.leads": "Abatarangije kwiyandikisha", "p.leadsnote": "Aba bantu batangiye kwiyandikisha ntibarangize, cyangwa ntibarishyura amafaranga yo kwiyandikisha. Bahamagare ubafashe.", "p.lead.none": "Nta muntu uhari utegereje.", "p.unf": "Bahagarariye hagati", "p.unp": "Biyandikishije, ntibishyura", "p.stopped": "Bahagaze ku", "p.call": "Hamagara", "p.where": "Aho atuye", "p.step.language": "Guhitamo ururimi", "p.step.role": "Guhitamo umuhinzi/umuguzi", "p.step.id": "Gutanga indangamuntu", "p.step.name": "Gutanga izina", "p.step.sector": "Guhitamo umurenge", "p.step.village": "Guhitamo umudugudu", "p.step.confirm": "Kwemeza", "p.unpaid": "Ntiyishyuye", "p.role": "Uruhare", "p.all": "Uruhare rwose", "p.q": "Shakisha izina cyangwa telefone", "p.add": "Ongeraho umukozi", "p.reset": "Ijambo ry'ibanga rishya", "p.resetq": "Ushaka guha uyu muntu ijambo ry'ibanga rishya ry'agateganyo? Irisanzwe rizahita ritongera gukora.", "p.resetdone": "Ijambo ry'ibanga rishya. Rigaragara ubu gusa: ryandike, urihe uwo muntu.", "p.suspend": "Hagarika", "p.activate": "Subizaho konti", "p.pw": "Ijambo ry'ibanga (inyuguti 8+)", "p.area": "Agace (kuri Agent)",
       "p.created": "Konti y'umukozi yafunguwe.", "p.permit": "Andika icyangombwa",
       "fe.registration_fee": "Amafaranga yo kwiyandikisha (Frw)", "fe.listing_fee": "Amafaranga yo kwandikisha igicuruzwa (Frw)", "fe.commission_bps": "Komisiyo (basis points: 200 = 2%)", "fe.clearance_fee": "Amafaranga ya kode y'irembo (Frw)",
       "fe.saved": "Byabitswe.", "fe.readonly": "SuperAdmin wenyine ashobora guhindura amafaranga.",
@@ -50,7 +50,7 @@
       "t.ov": "Aperçu", "t.people": "Personnes", "t.fees": "Frais", "t.cat": "Produits", "t.rules": "Règles de l'État", "t.places": "Villages", "t.tools": "Outils de test", "t.data": "Base de données", "t.audit": "Journal", "t.acc": "Compte",
       "a.users": "Comptes", "a.gmv": "Ventes terminées", "a.reg": "Frais d'inscription", "a.comm": "Commission", "a.fees": "Frais d'annonce et de porte perçus", "a.accr": "Frais en attente de perception", "a.failed": "Paiements échoués",
       "a.items": "Articles par état",
-      "p.role": "Rôle", "p.all": "Tous les rôles", "p.q": "Rechercher nom ou téléphone", "p.add": "Ajouter du personnel", "p.reset": "Nouveau mot de passe", "p.resetq": "Définir un nouveau mot de passe temporaire ? L'ancien ne fonctionnera plus.", "p.resetdone": "Nouveau mot de passe (affiché une seule fois) :", "p.suspend": "Suspendre", "p.activate": "Réactiver", "p.pw": "Mot de passe (8+ caractères)", "p.area": "Zone (pour les agents)",
+      "p.leads": "Inscriptions non terminées", "p.leadsnote": "Ces personnes ont commencé à s'inscrire sans terminer, ou n'ont pas payé les frais d'inscription. Appelez-les pour les aider.", "p.lead.none": "Personne n'attend.", "p.unf": "Arrêtés en cours de route", "p.unp": "Inscrits, frais non payés", "p.stopped": "Arrêté à", "p.call": "Appeler", "p.where": "Lieu", "p.step.language": "Choix de la langue", "p.step.role": "Choix agriculteur/acheteur", "p.step.id": "Saisie de la pièce d'identité", "p.step.name": "Saisie du nom", "p.step.sector": "Choix du secteur", "p.step.village": "Choix du village", "p.step.confirm": "Confirmation", "p.unpaid": "Frais non payés", "p.role": "Rôle", "p.all": "Tous les rôles", "p.q": "Rechercher nom ou téléphone", "p.add": "Ajouter du personnel", "p.reset": "Nouveau mot de passe", "p.resetq": "Définir un nouveau mot de passe temporaire ? L'ancien ne fonctionnera plus.", "p.resetdone": "Nouveau mot de passe (affiché une seule fois) :", "p.suspend": "Suspendre", "p.activate": "Réactiver", "p.pw": "Mot de passe (8+ caractères)", "p.area": "Zone (pour les agents)",
       "p.created": "Compte du personnel créé.", "p.permit": "Enregistrer un document",
       "fe.registration_fee": "Frais d'inscription (Frw)", "fe.listing_fee": "Frais d'annonce (Frw)", "fe.commission_bps": "Commission (points de base : 200 = 2 %)", "fe.clearance_fee": "Frais du code de porte (Frw)",
       "fe.saved": "Enregistré.", "fe.readonly": "Seul le SuperAdmin peut modifier les frais.",
@@ -122,8 +122,26 @@
     function setStatus(u, s) { E.api("/admin/users/" + u.id + "/status", { body: { status: s } }).then(load).catch(function (e) { E.toast(E.err(e), true); }); }
     role.addEventListener("change", load);
     q.addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(load, 300); });
-    E.fill(main, [h("div", { class: "filters" }, E.field(E.t("p.role"), role), E.field(E.t("search"), q), h("button", { class: "btn", text: E.t("p.add"), on: { click: function () { addStaff(load); } } })), list]);
-    load();
+    var leadBox = h("div");
+    function loadLeads() {
+      E.api("/admin/leads").then(function (r) {
+        function where(x) { return [x.village, x.sector, x.district].filter(Boolean).join(", ") || "-"; }
+        function call(x) { return h("a", { class: "btn small", href: "tel:" + x.phone, text: E.t("p.call") + " " + x.phone }); }
+        function role(x) { return x.role ? E.t("role." + x.role) : "-"; }
+        var un = r.unfinished, up = r.unpaid;
+        if (!un.length && !up.length) { E.fill(leadBox, h("details", { class: "card" }, h("summary", { text: E.t("p.leads") + " (0)" }), h("p", { class: "muted", text: E.t("p.lead.none") }))); return; }
+        var parts = [h("p", { class: "muted", text: E.t("p.leadsnote") })];
+        if (un.length) parts.push(h("h4", { text: E.t("p.unf") + " (" + un.length + ")" }), E.table([
+          { label: E.t("phone"), render: call }, { label: E.t("name"), render: function (x) { return x.name || "-"; } }, { label: E.t("p.role"), render: role },
+          { label: E.t("p.stopped"), render: function (x) { return E.t("p.step." + x.step); } }, { label: E.t("p.where"), render: where }, { label: E.t("date"), render: function (x) { return E.date(x.updated_at); } }], un));
+        if (up.length) parts.push(h("h4", { text: E.t("p.unp") + " (" + up.length + ")" }), E.table([
+          { label: E.t("phone"), render: call }, { label: E.t("name"), key: "name" }, { label: E.t("p.role"), render: role },
+          { label: E.t("p.where"), render: where }, { label: E.t("date"), render: function (x) { return E.date(x.created_at); } }], up));
+        E.fill(leadBox, h("details", { class: "card", open: "open" }, [h("summary", { text: E.t("p.leads") + " (" + (un.length + up.length) + ")" })].concat(parts)));
+      }).catch(function () { E.fill(leadBox, ""); });
+    }
+    E.fill(main, [leadBox, h("div", { class: "filters" }, E.field(E.t("p.role"), role), E.field(E.t("search"), q), h("button", { class: "btn", text: E.t("p.add"), on: { click: function () { addStaff(load); } } })), list]);
+    load(); loadLeads();
   }
   function addStaff(done) {
     E.locs().then(function (locs) {

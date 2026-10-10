@@ -22,7 +22,7 @@ def main():
                                                  password="agentpass1", location_id=loc))
     print("1) Farmer registers on a feature phone (USSD) - registration fee 500 Frw")
     ph = "+250788000003"
-    print(ussd.handle(c, ph, "1*1199880012345678*Jean Claude*1*1"))
+    print(ussd.handle(c, ph, "1*1*1199880012345678*Jean Claude*1*1*1"))
     ref = c.execute("SELECT provider_ref FROM transactions WHERE type='registration_fee'").fetchone()[0]
     payments.on_payment_result(c, ref, True)
     farmer = users.get_user_by_phone(c, ph)

@@ -70,8 +70,10 @@ def create_product(conn, farmer_id, category, quantity, price_per_unit, location
 
 def list_available(conn, category=None, location_id=None, limit=100, group=None):
     q = ("SELECT p.id,p.code,p.category,c.grp,c.name_rw,c.name_en,c.name_fr,p.quantity,p.unit,p.price_per_unit,p.grade,"
-         "p.sex,p.age_months,p.created_at,l.village,l.cell,l.sector,l.district,l.lat,l.lng FROM products p "
-         "JOIN categories c ON c.code=p.category LEFT JOIN locations l ON l.id=p.location_id WHERE p.status='Available'")
+         "p.sex,p.age_months,p.created_at,l.village,l.cell,l.sector,l.district,l.lat,l.lng,"
+         "u.name AS farmer_name,u.phone AS farmer_phone FROM products p "
+         "JOIN categories c ON c.code=p.category JOIN users u ON u.id=p.farmer_id "
+         "LEFT JOIN locations l ON l.id=p.location_id WHERE p.status='Available'")
     args = []
     if category:
         q += " AND p.category=?"

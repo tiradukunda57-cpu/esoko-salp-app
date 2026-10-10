@@ -12,7 +12,7 @@ from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Res
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import bootstrap, catalog, checkup, fees, geo, market, payments, permits, portal, reports, sms, ussd, users
+from . import bootstrap, catalog, checkup, fees, geo, leads, market, payments, permits, portal, reports, sms, ussd, users
 from .scope import check_area
 from .config import get_settings
 from .db import audit, connect, dialect, init_db, table_names, _id_tables
@@ -334,6 +334,12 @@ def admin_list_users(role: Optional[str] = None, q: Optional[str] = None,
         sql += " AND (name LIKE ? OR phone LIKE ?)"
         args += [f"%{q}%", f"%{q}%"]
     return [public_user(r) for r in conn.execute(sql + " ORDER BY id DESC LIMIT 200", args)]
+
+
+@app.get("/admin/leads")
+def admin_leads(user=Depends(require("admin", "superadmin")), conn=Depends(get_conn)):
+    """People who started to register but did not finish, or did not pay the registration fee yet: Admin can phone and help."""
+    return leads.list_open(conn)
 
 
 @app.post("/admin/users/{user_id}/status")

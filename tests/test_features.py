@@ -182,6 +182,37 @@ class AgentSaleSmsTests(unittest.TestCase):
         self.assertTrue(any(p["code"] in x for x in to_farmer))
 
 
+class BuyerUssdTests(unittest.TestCase):
+    def test_buyer_browses_by_sector_sees_farmer_phone_and_buys(self):
+        c, loc, sa, agent, farmer, buyer = world()
+        p = market.create_product(c, farmer, "potatoes", 3, 500)
+        ph, farmer_phone = users.get_user(c, buyer)["phone"], users.get_user(c, farmer)["phone"]
+        self.assertIn("Reba", ussd.handle(c, ph, ""))
+        self.assertIn("Ibihingwa", ussd.handle(c, ph, "1"))
+        sectors = ussd.handle(c, ph, "1*1")
+        self.assertIn("Ngororero", sectors)
+        items = ussd.handle(c, ph, "1*1*1")
+        self.assertIn("Ibirayi", items)
+        detail = ussd.handle(c, ph, "1*1*1*1")
+        self.assertIn(farmer_phone, detail)
+        self.assertIn("1500", detail)
+        done = ussd.handle(c, ph, "1*1*1*1*1")
+        self.assertTrue(done.startswith("END "))
+        self.assertEqual(c.execute("SELECT status FROM products WHERE id=?", (p["id"],)).fetchone()[0], "Reserved")
+        self.assertIn(p["code"], ussd.handle(c, ph, "2"))
+        again = ussd.handle(c, ph, "1*1*1")
+        self.assertTrue(again.startswith("END "))
+
+    def test_buyer_can_register_on_ussd(self):
+        c, loc, sa, agent, farmer, buyer = world()
+        ph = "+250788555111"
+        out = ussd.handle(c, ph, "1*2*1199880099999999*Nice Buyer*1*1*1")
+        self.assertTrue(out.startswith("END "))
+        u = users.get_user_by_phone(c, ph)
+        self.assertEqual(u["role"], "buyer")
+        self.assertTrue(u["password_hash"])
+
+
 class RoleTests(unittest.TestCase):
     def test_government_user_creation(self):
         c, loc, sa, agent, farmer, buyer = world()
@@ -230,3 +261,39 @@ class RoleTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SignupLeadTests(unittest.TestCase):
+    def test_half_finished_ussd_signup_is_visible_to_admin(self):
+        from app import leads
+        c = new_db()
+        add_location(c, "Mana")
+        ph = "+250788555111"
+        ussd.handle(c, ph, "")
+        ussd.handle(c, ph, "1*1")
+        ussd.handle(c, ph, "1*1*1199880012345678*Marie Claire")
+        open_ = leads.list_open(c)["unfinished"]
+        self.assertEqual([r["phone"] for r in open_], [ph])
+        self.assertEqual(open_[0]["step"], "sector")
+        self.assertEqual(open_[0]["name"], "Marie Claire")
+        self.assertEqual(open_[0]["role"], "farmer")
+        self.assertNotIn("1199880012345678", str(open_))   # the National ID is never kept
+        ussd.handle(c, ph, "1*1*1199880012345678*Marie Claire*1*1*1")
+        both = leads.list_open(c)
+        self.assertEqual(both["unfinished"], [])
+        self.assertEqual([r["phone"] for r in both["unpaid"]], [ph])   # registered but fee not paid
+
+    def test_buyer_on_basic_phone_sees_sellers_phone(self):
+        c, loc, sa, agent, farmer, buyer = world()
+        market.create_product(c, farmer, "potatoes", 10, 500)
+        b = c.execute("SELECT phone FROM users WHERE id=?", (buyer,)).fetchone()[0]
+        f = c.execute("SELECT phone FROM users WHERE id=?", (farmer,)).fetchone()[0]
+        self.assertTrue(ussd.handle(c, b, "").startswith("CON "))
+        self.assertTrue(ussd.handle(c, b, "1").startswith("CON "))
+        self.assertTrue(ussd.handle(c, b, "1*1").startswith("CON "))
+        sector = ussd.handle(c, b, "1*1")
+        self.assertIn("1.", sector)
+        items = ussd.handle(c, b, "1*1*1")
+        self.assertTrue(items.startswith("CON "))
+        detail = ussd.handle(c, b, "1*1*1*1")
+        self.assertIn(f.lstrip("+"), detail.replace("+", ""))

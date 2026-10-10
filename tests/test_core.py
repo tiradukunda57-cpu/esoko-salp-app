@@ -231,11 +231,13 @@ class UssdTests(unittest.TestCase):
         add_location(c, "Mana")
         ph = "+250788777777"
         self.assertTrue(ussd.handle(c, ph, "").startswith("CON "))
-        self.assertIn("16", ussd.handle(c, ph, "1"))
-        self.assertTrue(ussd.handle(c, ph, "1*1199880012345678").startswith("CON "))
-        self.assertIn("Mana", ussd.handle(c, ph, "1*1199880012345678*Jean Claude"))
-        self.assertIn("500", ussd.handle(c, ph, "1*1199880012345678*Jean Claude*1"))
-        end = ussd.handle(c, ph, "1*1199880012345678*Jean Claude*1*1")
+        self.assertIn("Umuguzi", ussd.handle(c, ph, "1"))
+        self.assertIn("16", ussd.handle(c, ph, "1*1"))
+        self.assertTrue(ussd.handle(c, ph, "1*1*1199880012345678").startswith("CON "))
+        self.assertIn("Ngororero", ussd.handle(c, ph, "1*1*1199880012345678*Jean Claude"))
+        self.assertIn("Mana", ussd.handle(c, ph, "1*1*1199880012345678*Jean Claude*1"))
+        self.assertIn("500", ussd.handle(c, ph, "1*1*1199880012345678*Jean Claude*1*1"))
+        end = ussd.handle(c, ph, "1*1*1199880012345678*Jean Claude*1*1*1")
         self.assertTrue(end.startswith("END "))
         u = users.get_user_by_phone(c, ph)
         self.assertEqual(u["status"], "pending_payment")
@@ -255,13 +257,13 @@ class UssdTests(unittest.TestCase):
         c = new_db()
         add_location(c, "Mana")
         activate(c, "farmer", "Existing F", "0788777777", "1199880012345678")
-        self.assertTrue(ussd.handle(c, "+250788999999", "2*123").startswith("END "))
-        dup = ussd.handle(c, "+250788999999", "2*1199880012345678*Someone Else*1*1")
+        self.assertTrue(ussd.handle(c, "+250788999999", "2*1*123").startswith("END "))
+        dup = ussd.handle(c, "+250788999999", "2*1*1199880012345678*Someone Else*1*1*1")
         self.assertTrue(dup.startswith("END "))
 
-    def test_buyer_blocked_on_ussd(self):
+    def test_staff_blocked_on_ussd(self):
         c, loc, sa, agent, farmer, buyer = world()
-        self.assertTrue(ussd.handle(c, "+250788000004", "").startswith("END "))
+        self.assertTrue(ussd.handle(c, "+250788000002", "").startswith("END "))
 
 
 if __name__ == "__main__":

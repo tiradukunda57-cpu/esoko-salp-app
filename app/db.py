@@ -102,6 +102,13 @@ CREATE TABLE IF NOT EXISTS verifications(
 CREATE TABLE IF NOT EXISTS fee_config(
   key TEXT PRIMARY KEY, value INTEGER NOT NULL, updated_at TEXT NOT NULL, updated_by INTEGER
 );
+-- People who started signing up (USSD) but did not finish: kept so an Admin can phone and help them. No National ID is stored here.
+CREATE TABLE IF NOT EXISTS signup_leads(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  phone TEXT NOT NULL UNIQUE, role TEXT, name TEXT, language TEXT, location_id INTEGER,
+  step TEXT NOT NULL, completed INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS audit_log(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   actor_id INTEGER, action TEXT NOT NULL, entity TEXT, entity_id TEXT, detail TEXT,
