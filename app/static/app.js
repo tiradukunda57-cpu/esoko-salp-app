@@ -105,6 +105,18 @@
       });
   };
 
+  /** One browser keeps one sign-in. If another tab signs in as someone else (or signs out), this tab reloads and
+   *  lands on the right page instead of sending requests with the wrong person's token. */
+  var watching = false;
+  function watchSession() {
+    if (watching) return; watching = true;
+    var started = E.session.token();
+    function check() { if (E.session.token() !== started) w.location.reload(); }
+    w.addEventListener("storage", function (e) { if (e.key === "esoko_token" || e.key === "esoko_user" || e.key === null) check(); });
+    w.addEventListener("focus", check);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) check(); });
+  }
+
   /** Page guard: confirms the stored token still works and the role may see this page. */
   E.guard = function (roles) {
     if (!E.session.token()) { w.location.replace("/"); return Promise.reject(new Error("no session")); }
@@ -113,6 +125,7 @@
       E.session.set(E.session.token(), u);
       if (roles.indexOf(u.role) < 0) { w.location.replace(E.home(u.role)); throw new Error("wrong role"); }
       if (u.must_change_password && E.forceChange) { E.forceChange(); return new Promise(function () {}); }
+      watchSession();
       return u;
     });
   };
@@ -376,4 +389,35 @@
   E.copy = function (text) {
     if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { E.toast(E.t("ok")); });
   };
+
+  /* ------------------------------------------------------------ show / hide password (the "eye") */
+  E.i18n({
+    en: { "pw.show": "Show password", "pw.hide": "Hide password" },
+    rw: { "pw.show": "Erekana ijambo ry'ibanga", "pw.hide": "Hisha ijambo ry'ibanga" },
+    fr: { "pw.show": "Afficher le mot de passe", "pw.hide": "Masquer le mot de passe" }
+  });
+  var EYE = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 12s3.8-7 10.5-7 10.5 7 10.5 7-3.8 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var EYE_OFF = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.9 10.9 0 0 1 12 5c6.7 0 10.5 7 10.5 7a17.6 17.6 0 0 1-3.2 4.1M6.5 6.6A17.7 17.7 0 0 0 1.5 12S5.3 19 12 19c1.6 0 3-.4 4.3-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+  var eyes = [];
+  function enhance(input) {
+    if (input.getAttribute("data-eye") || !input.parentNode) return;
+    input.setAttribute("data-eye", "1");
+    var wrap = document.createElement("span"); wrap.className = "pwwrap";
+    input.parentNode.insertBefore(wrap, input); wrap.appendChild(input);
+    var b = document.createElement("button"); b.type = "button"; b.className = "pweye"; wrap.appendChild(b);
+    function paint() {
+      var hidden = input.type === "password";
+      b.innerHTML = hidden ? EYE : EYE_OFF;
+      b.setAttribute("aria-label", E.t(hidden ? "pw.show" : "pw.hide")); b.title = E.t(hidden ? "pw.show" : "pw.hide");
+      b.setAttribute("aria-pressed", hidden ? "false" : "true");
+    }
+    b.addEventListener("click", function () { input.type = input.type === "password" ? "text" : "password"; paint(); input.focus(); });
+    eyes.push(paint); paint();
+  }
+  function scan(root) { [].forEach.call((root.querySelectorAll ? root.querySelectorAll('input[type="password"]') : []), enhance); }
+  E.onLang(function () { eyes.forEach(function (f) { f(); }); });
+  new MutationObserver(function (list) {
+    list.forEach(function (m) { [].forEach.call(m.addedNodes, function (n) { if (n.nodeType === 1) { if (n.matches && n.matches('input[type="password"]')) enhance(n); scan(n); } }); });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+  scan(document);
 })(window);

@@ -167,6 +167,21 @@ class DashboardTests(unittest.TestCase):
         self.assertTrue({"cattle", "goat", "sheep", "pig", "chicken", "rabbit"} <= names)
 
 
+class AgentSaleSmsTests(unittest.TestCase):
+    def test_agent_of_the_area_is_told_when_a_product_is_bought(self):
+        c, loc, sa, agent, farmer, buyer = world()
+        p = market.create_product(c, farmer, "potatoes", 3, 500)
+        c.execute("DELETE FROM notifications")
+        sold_order(c, buyer, p["id"])
+        rows = c.execute("SELECT msisdn,text FROM notifications").fetchall()
+        to_agent = [r["text"] for r in rows if r["msisdn"] == agent["phone"]]
+        to_farmer = [r["text"] for r in rows if r["msisdn"] != agent["phone"]]
+        self.assertEqual(len(to_agent), 1)
+        self.assertIn(p["code"], to_agent[0])
+        self.assertIn("Jean", to_agent[0])
+        self.assertTrue(any(p["code"] in x for x in to_farmer))
+
+
 class RoleTests(unittest.TestCase):
     def test_government_user_creation(self):
         c, loc, sa, agent, farmer, buyer = world()

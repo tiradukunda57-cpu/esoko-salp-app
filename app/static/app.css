@@ -235,3 +235,10 @@ footer.site { border-top: 1px solid var(--line); padding: 20px 16px 40px; color:
 .tablist button span { color: var(--ink-2); font-size: .85rem; }
 .switch { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; }
 td .btn + .btn { margin-left: 6px; }
+
+/* show / hide password */
+.pwwrap { position: relative; display: block; }
+.pwwrap input { padding-right: 48px; }
+.pweye { position: absolute; right: 2px; top: 2px; width: 44px; height: 40px; display: grid; place-items: center; border: 0; background: transparent; color: var(--ink); opacity: .65; cursor: pointer; border-radius: var(--r); }
+.pweye:hover, .pweye:focus-visible { opacity: 1; }
+.pweye[aria-pressed="true"] { opacity: 1; color: var(--forest); }

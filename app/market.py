@@ -119,6 +119,27 @@ def on_escrow_funded(conn, order_id):
     p = _row(conn, "products", o["product_id"])
     f = _row(conn, "users", p["farmer_id"])
     sms.send_sms(conn, f["phone"], t("sms_selected", f["language"], code=p["code"], village=_village(conn, p["location_id"])))
+    _notify_agents_of_sale(conn, p, f)
+
+
+def _notify_agents_of_sale(conn, p, farmer):
+    """Tells the Agent(s) of the farmer's sector (and the Agent who registered the farmer) that something was bought."""
+    loc = conn.execute("SELECT sector,district FROM locations WHERE id=?", (p["location_id"],)).fetchone() if p["location_id"] else None
+    ids = []
+    if loc:
+        ids += [r["id"] for r in conn.execute(
+            "SELECT u.id FROM users u JOIN locations l ON l.id=u.location_id "
+            "WHERE u.role='agent' AND u.status='active' AND l.sector=? AND l.district=?", (loc["sector"], loc["district"]))]
+    reg = conn.execute("SELECT actor_id FROM audit_log WHERE action='user.register' AND entity='user' AND entity_id=? "
+                       "ORDER BY id LIMIT 1", (str(farmer["id"]),)).fetchone()
+    if reg and reg["actor_id"] not in ids:
+        ids.append(reg["actor_id"])
+    qty = "%s %s" % (p["quantity"], p["unit"])
+    for uid in ids:
+        a = conn.execute("SELECT * FROM users WHERE id=? AND role='agent' AND status='active'", (uid,)).fetchone()
+        if a:
+            sms.send_sms(conn, a["phone"], t("sms_agent_sale", a["language"], code=p["code"], qty=qty,
+                                              farmer=farmer["name"].split()[0], phone=farmer["phone"]))
 
 
 def on_escrow_failed(conn, order_id):
