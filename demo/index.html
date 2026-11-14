@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light dark}html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<title>E-Soko SALP</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a product tour. Header with language switch, tab bar for five working screens, content below. Flag-derived palette: highland green, gold, lake blue. */
+:root{
+  --bg:#EDF2EE; --surface:#FFFFFF; --surface2:#E2EAE4; --fg:#0F2A22; --muted:#4D6359; --line:#C9D6CD;
+  --brand:#1B5E3F; --brand-ink:#FFFFFF; --gold:#F2B705; --gold-ink:#2C2100; --blue:#0B7FB3;
+  --good:#1B7F4B; --warn:#9A6411; --bad:#B3362B;
+  --lcd-bg:#C9DDB4; --lcd-fg:#16260F; --dev:#1B211E;
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1914; --surface:#12261E; --surface2:#1A3228; --fg:#E7F1EB; --muted:#9BB2A5; --line:#2A4439;
+  --brand:#4FC08A; --brand-ink:#05200F; --gold:#F2B705; --gold-ink:#2C2100; --blue:#52B8E8;
+  --good:#5CD08F; --warn:#E3AC47; --bad:#F0877D; --lcd-bg:#A9C28F; --lcd-fg:#0E1A09; --dev:#050B08; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1914; --surface:#12261E; --surface2:#1A3228; --fg:#E7F1EB; --muted:#9BB2A5; --line:#2A4439;
+  --brand:#4FC08A; --brand-ink:#05200F; --gold:#F2B705; --gold-ink:#2C2100; --blue:#52B8E8;
+  --good:#5CD08F; --warn:#E3AC47; --bad:#F0877D; --lcd-bg:#A9C28F; --lcd-fg:#0E1A09; --dev:#050B08; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.5;
+  padding-block:0 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1100px;margin:0 auto}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,5vw,46px);font-weight:700;letter-spacing:-.02em}
+h2{font-size:22px;font-weight:700;letter-spacing:-.01em}
+h3{font-size:16px;font-weight:700}
+p{margin:0}
+.muted{color:var(--muted)}
+.mono{font-family:var(--font-mono)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+a{color:var(--brand)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-block:16px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:20px}
+.mark{width:30px;height:30px;border-radius:8px;background:var(--brand);position:relative;overflow:hidden}
+.mark::before,.mark::after{content:"";position:absolute;left:0;right:0}
+.mark::before{top:11px;height:8px;background:var(--gold)}
+.mark::after{bottom:0;height:9px;background:var(--blue)}
+.tagline{font-size:13px;color:var(--muted);flex-basis:100%}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--fg);padding:7px 12px;font-weight:600;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink)}
+
+nav.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:24px;scrollbar-width:thin}
+nav.tabs button{flex:0 0 auto;border:0;background:transparent;color:var(--muted);padding:12px 14px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs button[aria-current="page"]{color:var(--fg);border-bottom-color:var(--gold)}
+
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.plain{padding:0;border:0;background:none}
+.stack{display:flex;flex-direction:column;gap:12px;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.sp{justify-content:space-between}
+
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:9px 14px;border-radius:9px;font-weight:600}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:6px 12px;border-radius:999px;font-weight:600;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surface2);color:var(--fg)}
+.pill.good{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn)}
+.pill.bad{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.pill.blue{background:color-mix(in srgb,var(--blue) 18%,transparent);color:var(--blue)}
+.badge-ex{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line);padding:2px 8px;border-radius:6px}
+
+.hero{display:grid;gap:20px;grid-template-columns:1fr;padding-block:8px 28px}
+.hero p.lead{font-size:18px;max-width:60ch;color:var(--muted)}
+.week{display:grid;gap:0;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.week>div{padding:16px 18px;border-left:3px solid var(--line)}
+.week>div:nth-child(2){border-left-color:var(--gold)}
+.week .when{font-family:var(--font-mono);font-size:13px;color:var(--brand);font-weight:500}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface2)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.note{border-left:4px solid var(--gold);background:var(--surface);padding:12px 16px;border-radius:0 10px 10px 0}
+.note.blue{border-left-color:var(--blue)}
+section{margin-block:36px 0}
+section>h2{margin-bottom:14px}
+
+/* feature phone */
+.device{background:var(--dev);border-radius:34px 34px 44px 44px;padding:22px 18px 22px;max-width:300px;margin:0 auto;width:100%;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.speaker{width:60px;height:5px;border-radius:3px;background:#3b4440;margin:0 auto 14px}
+.lcd{background:var(--lcd-bg);color:var(--lcd-fg);font-family:var(--font-mono);font-size:13px;line-height:1.45;border-radius:8px;padding:12px;min-height:250px;white-space:pre-wrap;word-break:break-word;border:2px solid #0b0f0d}
+.lcd.idle{display:flex;align-items:center;justify-content:center;text-align:center;color:color-mix(in srgb,var(--lcd-fg) 70%,transparent)}
+.dial{display:flex;gap:8px;margin-top:14px}
+.dial input{flex:1;min-width:0;border-radius:8px;border:2px solid #0b0f0d;background:#e6efe0;color:#102008;font-family:var(--font-mono);font-size:15px;padding:8px 10px}
+.dial button{border:0;border-radius:8px;background:#E8B900;color:#2C2100;font-weight:700;padding:0 14px}
+.devbtns{display:flex;gap:8px;margin-top:10px}
+.devbtns button{flex:1;border:0;border-radius:8px;padding:9px;background:#2c3531;color:#d7e4dc;font-weight:600;font-size:13px}
+.sms{background:var(--surface2);border-radius:4px 14px 14px 14px;padding:10px 12px;font-size:14px;max-width:48ch}
+.sms .meta{font-size:11px;color:var(--muted);margin-bottom:2px;font-family:var(--font-mono)}
+
+/* market */
+.item{display:flex;flex-direction:column;gap:10px}
+.item .nm{font-family:var(--font-display);font-size:19px;font-weight:700}
+.item .price{font-variant-numeric:tabular-nums;font-weight:600}
+.kv{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.ico{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:var(--surface2);flex:0 0 auto}
+.ico svg{width:20px;height:20px;stroke:var(--brand);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* expert */
+.qitem{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--fg)}
+.qitem[aria-pressed="true"]{border-color:var(--brand);box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 30%,transparent)}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:13px;font-weight:600}
+.field select,.field input[type=number],.cfg input{border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 10px;border-radius:8px;font:inherit;min-width:0;width:100%}
+.field input[type=range]{width:100%;accent-color:var(--brand)}
+.val{font-family:var(--font-mono);font-weight:500}
+.reco{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface2)}
+.decs{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.decs button{border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;padding:10px;font-weight:700}
+.decs button[aria-pressed="true"]{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 14%,var(--surface))}
+.checks{display:flex;flex-direction:column;gap:6px}
+.checks label{display:flex;gap:8px;align-items:flex-start;font-size:14px}
+.checks input{margin-top:3px;accent-color:var(--brand)}
+
+/* business */
+.kpi{display:flex;flex-direction:column;gap:2px}
+.kpi b{font-family:var(--font-display);font-size:26px;font-variant-numeric:tabular-nums}
+.bar{height:10px;border-radius:5px;background:var(--surface2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brand)}
+.cfg{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.cfg label{font-size:12px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;max-width:90vw;z-index:20}
+footer{margin-top:40px;font-size:13px;color:var(--muted)}
+footer ul{padding-left:18px;margin:8px 0 0}
+@media (prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><span>E-Soko SALP</span></div>
+    <div class="row">
+      <span class="badge-ex" id="exbadge"></span>
+      <div class="seg" role="group" aria-label="Language" id="langseg">
+        <button data-l="en">EN</button><button data-l="rw">RW</button><button data-l="fr">FR</button>
+      </div>
+    </div>
+    <div class="tagline" id="tagline"></div>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  <main id="view"></main>
+  <footer id="foot"></footer>
+</div>
+<div id="toast" hidden></div>
+
+<script>
+const LANGS=['en','rw','fr'];
+let lang='en';
+try{const s=localStorage.getItem('esoko-lang');if(LANGS.includes(s))lang=s;}catch(e){}
+const LI=()=>LANGS.indexOf(lang);
+
+/* ---------- translations: key -> [EN, RW, FR] ---------- */
+const L={
+tag:[`Verified farm produce and livestock, from the village to the market`,`Umusaruro n'amatungo byizewe, biva mu mudugudu bijya ku isoko`,`Produits agricoles et bétail vérifiés, du village au marché`],
+example:[`Demo with example data`,`Ubugerageza n'amakuru y'ikitegererezo`,`Démo avec données d'exemple`],
+nav_overview:[`Overview`,`Incamake`,`Aperçu`],
+nav_phone:[`Farmer phone`,`Telefone y'umuhinzi`,`Téléphone`],
+nav_market:[`Buyer market`,`Isoko ry'abaguzi`,`Marché acheteur`],
+nav_expert:[`Expert desk`,`Ibiro by'impuguke`,`Poste d'expert`],
+nav_business:[`Business & admin`,`Ubucuruzi n'ubuyobozi`,`Modèle & admin`],
+
+ov_h1:[`Experts at the village gate. Farmers paid on time.`,`Impuguke ku irembo ry'umudugudu. Umuhinzi yishyurwa ku gihe.`,`Des experts à la porte du village. Des agriculteurs payés à temps.`],
+ov_p:[`Farmers list crops and livestock from a basic phone. Licensed agronomists and veterinarians inspect, decide and advise. Buyers pay into escrow before they travel. Pilot area: Mana village, Mugano cell, Ngororero sector.`,`Abahinzi n'aborozi bandikisha umusaruro ku telefone isanzwe. Abahanga mu buhinzi n'abaveterineri bafite uruhushya barawugenzura, bagafata icyemezo kandi bagatanga inama. Abaguzi bishyura muri escrow mbere yo kugenda. Aho bizatangirira: Umudugudu wa Mana, Akagari ka Mugano, Umurenge wa Ngororero.`,`Les agriculteurs publient récoltes et bétail depuis un téléphone basique. Des agronomes et vétérinaires agréés inspectent, décident et conseillent. Les acheteurs paient sous séquestre avant de se déplacer. Zone pilote : village de Mana, cellule de Mugano, secteur de Ngororero.`],
+ov_cta1:[`Try the farmer phone`,`Gerageza telefone y'umuhinzi`,`Essayer le téléphone`],
+ov_cta2:[`Open the expert desk`,`Fungura ibiro by'impuguke`,`Ouvrir le poste d'expert`],
+ov_week:[`One week, three moments`,`Icyumweru kimwe, ibihe bitatu`,`Une semaine, trois temps forts`],
+w1t:[`Every day`,`Buri munsi`,`Chaque jour`],
+w1p:[`Farmers list on *801#. Buyers browse and reserve with escrow.`,`Abahinzi bandikisha kuri *801#. Abaguzi barareba bagafata bakishyura muri escrow.`,`Les agriculteurs publient via *801#. Les acheteurs consultent et réservent sous séquestre.`],
+w2t:[`Tue & Fri 19:00`,`Kuwa Kabiri & Kuwa Gatanu 19:00`,`Mar. et ven. 19h00`],
+w2p:[`The system closes the books. Sold goods are matched, unsold goods ask for an expert check. Every owner gets an SMS.`,`Sisitemu ifunga imibare. Ibyaguzwe birahuzwa, ibitaguzwe bisaba igenzura ry'impuguke. Buri nyiri igicuruzwa yohererezwa SMS.`,`Le système clôture. Les ventes sont rapprochées, les invendus demandent un contrôle d'expert. Chaque propriétaire reçoit un SMS.`],
+w3t:[`Wed & Sat morning`,`Kuwa Gatatu & Kuwa Gatandatu mu gitondo`,`Mer. et sam. matin`],
+w3p:[`The expert inspects at the village point, decides and advises. The farmer is paid, or takes cleared goods to the regular market.`,`Impuguke igenzura ku cyumba cy'umudugudu, igafata icyemezo ikanatanga inama. Umuhinzi yishyurwa, cyangwa ajyana ibyemejwe ku isoko risanzwe.`,`L'expert inspecte au point du village, décide et conseille. L'agriculteur est payé ou emmène ses biens autorisés au marché ordinaire.`],
+ov_why:[`What makes it different`,`Icyo itandukaniyeho`,`Ce qui la distingue`],
+d1t:[`Professionals decide`,`Abahanga ni bo bafata icyemezo`,`Des professionnels tranchent`],
+d1p:[`An agronomist checks crops. A veterinarian checks animals. Each records findings, makes the call (approve, downgrade, hold or reject) and sends advice to the farmer.`,`Umuhanga mu buhinzi agenzura imyaka. Umuveterineri agenzura amatungo. Buri wese yandika ibyo yabonye, agafata icyemezo (kwemeza, kugabanya agaciro, guhagarika cyangwa kwanga) akoherereza umuhinzi inama.`,`L'agronome contrôle les cultures. Le vétérinaire contrôle les animaux. Chacun consigne ses constats, tranche (approuver, déclasser, retenir ou rejeter) et envoie des conseils à l'agriculteur.`],
+d2t:[`Jobs for graduates`,`Akazi ku barangije kwiga`,`Des emplois pour les diplômés`],
+d2p:[`Each cell can employ a licensed expert, paid per inspection and advice session. Rwanda counts 6,220 professional veterinarians: 660 doctors, 320 production specialists and 5,240 technicians.`,`Buri kagari gashobora guha akazi impuguke ifite uruhushya, ihemberwa buri genzura n'inama itanga. U Rwanda rufite abaveterineri b'umwuga 6.220: abaganga 660, inzobere mu bworozi 320 n'abatekinisiye 5.240.`,`Chaque cellule peut employer un expert agréé, payé à l'inspection et au conseil. Le Rwanda compte 6 220 professionnels vétérinaires : 660 docteurs, 320 spécialistes de production et 5 240 techniciens.`],
+d3t:[`Works on any phone`,`Ikora kuri telefone iyo ari yo yose`,`Fonctionne sur tout téléphone`],
+d3p:[`USSD menus in Kinyarwanda, English and French. No smartphone, no internet. Payment arrives by mobile money once the expert approves.`,`Menu za USSD mu Kinyarwanda, Icyongereza n'Igifaransa. Nta smartphone, nta internet. Amafaranga agera kuri Mobile Money impuguke imaze kwemeza.`,`Menus USSD en kinyarwanda, anglais et français. Ni smartphone ni internet. Le paiement arrive par mobile money dès que l'expert approuve.`],
+d4t:[`Clearance against theft`,`Icyemezo gikumira ubujura`,`Un certificat contre le vol`],
+d4p:[`Unsold animals and produce get a one-day clearance code the market gate can verify. It supports the official livestock relocation permit and does not replace it.`,`Ibitaguzwe bihabwa kode y'umunsi umwe igenzurwa ku irembo ry'isoko. Ishyigikira uruhushya rwemewe rwo kwimura amatungo, ntiruyisimbura.`,`Les invendus reçoivent un code valable un jour, vérifiable à l'entrée du marché. Il appuie l'autorisation officielle de déplacement du bétail sans la remplacer.`],
+ov_fit:[`Where it fits among existing platforms`,`Aho ihurira n'izindi sisitemu zisanzweho`,`Sa place parmi les plateformes existantes`],
+fit1:[`Initiative`,`Gahunda`,`Initiative`],fit2:[`What it does`,`Icyo ikora`,`Ce qu'elle fait`],fit3:[`How E-Soko SALP relates`,`Uko E-Soko SALP ihurira na yo`,`Rapport avec E-Soko SALP`],
+f1n:[`eSoko (MINAGRI)`,`eSoko (MINAGRI)`,`eSoko (MINAGRI)`],
+f1d:[`Market price information gathered from over 60 markets by field staff.`,`Amakuru y'ibiciro by'amasoko arenga 60 akusanywa n'abakozi bo mu murima.`,`Informations sur les prix collectées sur plus de 60 marchés par des agents de terrain.`],
+f1r:[`We use it as the price reference and add live village listings, escrow and delivery.`,`Tuyikoresha nk'icyitegererezo cy'ibiciro, tukongeraho ibyanditswe mu midugudu, escrow n'ibyo kugemura.`,`Nous l'utilisons comme référence de prix et ajoutons annonces de village, séquestre et livraison.`],
+f2n:[`AgriGO, One Acre Fund (USSD)`,`AgriGO, One Acre Fund (USSD)`,`AgriGO, One Acre Fund (USSD)`],
+f2d:[`Farm records, finance and input enrolment over USSD.`,`Inyandiko z'ubuhinzi, inguzanyo no kwiyandikisha ku bikoresho binyuze kuri USSD.`,`Registres agricoles, financement et inscription aux intrants par USSD.`],
+f2r:[`Same channel, different job. We sell produce and livestock, not inputs.`,`Inzira imwe, akazi gatandukanye. Dugurisha umusaruro n'amatungo, ntabwo ari ibikoresho.`,`Même canal, autre mission. Nous vendons récoltes et bétail, pas des intrants.`],
+f3n:[`M-LIMA`,`M-LIMA`,`M-LIMA`],
+f3d:[`Cooperative platform with mobile bidding, around 10,000 farmers in 10 cooperatives.`,`Urubuga rw'amakoperative rufite ipiganwa kuri telefone, abahinzi hafi 10.000 mu makoperative 10.`,`Plateforme coopérative avec enchères mobiles, environ 10 000 agriculteurs dans 10 coopératives.`],
+f3r:[`Closest on market linkage. We add a village-level expert decision and reach individual smallholders.`,`Ni yo yegereye cyane mu guhuza abaguzi n'abahinzi. Twongeraho icyemezo cy'impuguke mu mudugudu kandi tugera ku bahinzi bato ku giti cyabo.`,`La plus proche pour la mise en relation. Nous ajoutons la décision d'un expert au village et touchons les petits exploitants individuels.`],
+f4n:[`AMIS (national platform)`,`AMIS (sisitemu y'igihugu)`,`AMIS (plateforme nationale)`],
+f4d:[`Farmer registration, livestock identification, veterinary care and production tracking, under development as national infrastructure.`,`Kwiyandikisha kw'abahinzi, kumenyekanisha amatungo, serivisi z'ubuveterineri no gukurikirana umusaruro, iri gutegurwa nk'ibikorwaremezo by'igihugu.`,`Enregistrement des agriculteurs, identification du bétail, soins vétérinaires et suivi de production, en cours de développement comme infrastructure nationale.`],
+f4r:[`We plan to plug in: reuse its farmer and animal IDs and check expert licences against it.`,`Turateganya kuyihuza: gukoresha indangamuntu zayo z'abahinzi n'amatungo no kugenzura impushya z'impuguke.`,`Nous prévoyons de nous y connecter : réutiliser ses identifiants d'agriculteurs et d'animaux et vérifier les licences des experts.`],
+f5n:[`Livestock relocation permit (Irembo)`,`Uruhushya rwo kwimura amatungo (Irembo)`,`Autorisation de déplacement du bétail (Irembo)`],
+f5d:[`Sector veterinary authorities approve moves inside a sector. District authorities handle moves between districts.`,`Abayobozi b'ubuveterineri bo mu murenge bemeza kwimura mu murenge. Abo mu karere bakemura kwimura hagati y'uturere.`,`Les autorités vétérinaires de secteur approuvent les déplacements dans un secteur. Celles du district gèrent les déplacements entre districts.`],
+f5r:[`Our clearance sits beside it. The expert reminds the owner to hold the permit.`,`Icyemezo cyacu kiyiherekeza. Impuguke yibutsa nyiri itungo kugira uruhushya.`,`Notre certificat l'accompagne. L'expert rappelle au propriétaire de détenir l'autorisation.`],
+ov_gap:[`The gap: none of the public sources reviewed (November 2026) combines escrow payment, a village expert's decision and a market-day clearance in one flow.`,`Icyuho: nta na kimwe mu byasomwe (Ugushyingo 2026) gihuriza hamwe ubwishyu muri escrow, icyemezo cy'impuguke mu mudugudu n'icyemezo cy'umunsi w'isoko.`,`Le vide : aucune des sources publiques consultées (novembre 2026) ne combine paiement sous séquestre, décision d'un expert au village et certificat de jour de marché dans un même parcours.`],
+ov_lesson:[`Lesson from earlier work: a free USSD potato platform tested in Rwanda saw low usage. Here, farmers never learn the system alone. The expert at the village point and the fixed market-day rhythm carry the adoption.`,`Isomo ryavuye mu bindi bikorwa: urubuga rwa USSD rw'ibirayi rutishyuza rwagerageje mu Rwanda ntirwakoreshejwe cyane. Hano, umuhinzi ntiyiga sisitemu wenyine. Impuguke yo ku mudugudu n'umunsi w'isoko uzwi bitwara abakoresha.`,`Leçon d'expériences passées : une plateforme USSD gratuite pour la pomme de terre testée au Rwanda a été peu utilisée. Ici, l'agriculteur n'apprend jamais seul. L'expert du village et le rythme fixe des jours de marché portent l'adoption.`],
+ov_src:[`Sources`,`Aho amakuru yavuye`,`Sources`],
+
+ph_title:[`Farmer's feature phone`,`Telefone y'umuhinzi (Gatushi)`,`Téléphone basique de l'agriculteur`],
+ph_hint:[`Press Dial, then type a number and press Send. Try 1 to sell crops.`,`Kanda Dial, wandike umubare hanyuma ukande Send. Gerageza 1 kugurisha imyaka.`,`Appuyez sur Dial, tapez un chiffre puis Send. Essayez 1 pour vendre des cultures.`],
+ph_dial:[`Dial *801#`,`Hamagara *801#`,`Composer *801#`],ph_send:[`Send`,`Ohereza`,`Envoyer`],ph_reset:[`Reset`,`Subira ku ntangiriro`,`Réinitialiser`],
+inbox_t:[`SMS inbox`,`SMS zakiriwe`,`Boîte SMS`],inbox_empty:[`No messages yet. List something to see the first SMS.`,`Nta butumwa buraza. Andikisha ikintu ubone SMS ya mbere.`,`Aucun message. Publiez une annonce pour voir le premier SMS.`],
+u_idle:[`Dial *801#`,`Hamagara *801#`,`Composez *801#`],
+u_menu:[`E-Soko\n1. Sell crops\n2. Sell livestock\n3. My listings\n4. Expert advice\n5. Language`,`E-Soko\n1. Gurisha imyaka\n2. Gurisha amatungo\n3. Ibyanjye\n4. Inama z'impuguke\n5. Ururimi`,`E-Soko\n1. Vendre des cultures\n2. Vendre du bétail\n3. Mes annonces\n4. Conseils d'experts\n5. Langue`],
+u_crop:[`Crop:\n1. {a}\n2. {b}\n3. {c}\n4. {d}\n5. {e}\n0. Back`,`Igihingwa:\n1. {a}\n2. {b}\n3. {c}\n4. {d}\n5. {e}\n0. Subira inyuma`,`Culture :\n1. {a}\n2. {b}\n3. {c}\n4. {d}\n5. {e}\n0. Retour`],
+u_live:[`Animal:\n1. {a}\n2. {b}\n3. {c}\n4. {d}\n0. Back`,`Itungo:\n1. {a}\n2. {b}\n3. {c}\n4. {d}\n0. Subira inyuma`,`Animal :\n1. {a}\n2. {b}\n3. {c}\n4. {d}\n0. Retour`],
+u_qty:[`{name}\nQuantity ({unit}):`,`{name}\nIngano ({unit}):`,`{name}\nQuantité ({unit}) :`],
+u_price:[`Price per {unit} in Frw:`,`Igiciro kuri {unit} mu Frw:`,`Prix par {unit} en Frw :`],
+u_conf:[`{qty} {unit} {name}\n{price} Frw each\nListing fee {fee} Frw\n1. Confirm\n2. Cancel`,`{qty} {unit} {name}\n{price} Frw kuri kimwe\nAmafaranga yo kwandikisha {fee} Frw\n1. Emeza\n2. Hagarika`,`{qty} {unit} {name}\n{price} Frw l'unité\nFrais d'annonce {fee} Frw\n1. Confirmer\n2. Annuler`],
+u_done:[`Listed. ID {id}.\nAn expert will inspect it at the collection point. You will get an SMS.\n0. Menu`,`Byanditswe. ID {id}.\nImpuguke izabigenzura ku cyumba cy'umudugudu. Uzabona SMS.\n0. Menu`,`Publié. ID {id}.\nUn expert l'inspectera au point de collecte. Vous recevrez un SMS.\n0. Menu`],
+u_mine:[`My listings`,`Ibyanjye`,`Mes annonces`],u_mine_none:[`None yet.`,`Nta na kimwe.`,`Aucune.`],
+u_adv:[`Expert advice\n1. Crops\n2. Livestock\n0. Back`,`Inama z'impuguke\n1. Imyaka\n2. Amatungo\n0. Subira inyuma`,`Conseils d'experts\n1. Cultures\n2. Bétail\n0. Retour`],
+u_advc:[`Dry beans to about 14% moisture and sort out damaged grain before delivery. Rotate potatoes with cereals to cut late blight.\n0. Back`,`Kuma ibishyimbo bigere kuri 14% by'ubuhehere kandi ukuremo ibyononekaye mbere yo kubizana. Hinduranya ibirayi n'ibinyampeke kugira ngo ugabanye indwara y'ibihumyo.\n0. Subira inyuma`,`Séchez les haricots à environ 14 % d'humidité et triez les grains abîmés avant livraison. Alternez pommes de terre et céréales pour limiter le mildiou.\n0. Retour`],
+u_advl:[`Keep vaccinations up to date with your sector veterinarian. Isolate any animal with fever or lameness and call the expert before moving it.\n0. Back`,`Kora inkingo ku gihe ukoresheje umuveterineri w'umurenge. Tandukanya itungo ririmo umuriro cyangwa ritabasha kugenda, uhamagare impuguke mbere yo kurigendana.\n0. Subira inyuma`,`Gardez les vaccins à jour avec le vétérinaire du secteur. Isolez tout animal fiévreux ou boiteux et appelez l'expert avant de le déplacer.\n0. Retour`],
+u_lang:[`Language\n1. English\n2. Kinyarwanda\n3. Français`,`Ururimi\n1. English\n2. Kinyarwanda\n3. Français`,`Langue\n1. English\n2. Kinyarwanda\n3. Français`],
+
+n_pot:[`Potatoes`,`Ibirayi`,`Pommes de terre`],n_bea:[`Beans`,`Ibishyimbo`,`Haricots`],n_mai:[`Maize`,`Ibigori`,`Maïs`],n_ban:[`Bananas`,`Ibitoki`,`Bananes`],n_pea:[`Peas`,`Amashaza`,`Petits pois`],
+n_cow:[`Cow`,`Inka`,`Vache`],n_goa:[`Goats`,`Ihene`,`Chèvres`],n_pig:[`Pig`,`Ingurube`,`Porc`],n_she:[`Sheep`,`Intama`,`Moutons`],
+un_bag:[`bags`,`imifuka`,`sacs`],un_kg:[`kg`,`kg`,`kg`],un_bunch:[`bunches`,`ibirundo`,`régimes`],un_head:[`head`,`amatungo`,`têtes`],
+s_active:[`Listed`,`Cyanditswe`,`Publié`],s_reserved:[`Reserved`,`Cyafashwe`,`Réservé`],s_sold:[`Sold, awaiting inspection`,`Cyaguzwe, gitegereje igenzura`,`Vendu, inspection en attente`],s_unsold:[`Unsold, awaiting check`,`Ntikiguzwe, gitegereje igenzura`,`Invendu, contrôle en attente`],
+s_paid:[`Paid`,`Cyishyuwe`,`Payé`],s_cleared:[`Cleared`,`Gifite icyemezo`,`Autorisé`],s_held:[`On hold`,`Cyahagaritswe`,`Retenu`],s_rejected:[`Rejected`,`Cyanzwe`,`Rejeté`],
+
+m_listed:[`E-Soko: {id} listed ({qty} {unit} {name}). Fee {fee} Frw. You will get an SMS after the next 19:00 checkup.`,`E-Soko: {id} cyanditswe ({qty} {unit} {name}). Amafaranga {fee} Frw. Uzabona SMS nyuma y'igenzura rya saa 19:00.`,`E-Soko : {id} publié ({qty} {unit} {name}). Frais {fee} Frw. Vous recevrez un SMS après le contrôle de 19h00.`],
+m_sold:[`Congratulations! {id} has a buyer. Bring it to the collection point tomorrow morning for the expert's inspection and your payment.`,`Congratulations! {id} cyabonye umuguzi. Cyizane ku cyumba cy'umudugudu ejo mu gitondo kugira ngo impuguke ikigenzure wishyurwe.`,`Félicitations ! {id} a trouvé un acheteur. Apportez-le au point de collecte demain matin pour l'inspection de l'expert et votre paiement.`],
+m_unsold:[`{id} was not sold. Bring it to the expert tomorrow morning. If it passes you get a clearance code for the regular market.`,`{id} ntikiguzwe. Kizane ku mpuguke ejo mu gitondo. Nikiramuka cyemejwe uzabona kode y'icyemezo cy'isoko risanzwe.`,`{id} n'a pas été vendu. Apportez-le à l'expert demain matin. S'il est conforme, vous recevrez un code d'autorisation pour le marché ordinaire.`],
+m_paid:[`{id} approved. {amt} Frw sent to your mobile money.`,`{id} cyemejwe. {amt} Frw yoherejwe kuri Mobile Money yawe.`,`{id} approuvé. {amt} Frw envoyés sur votre mobile money.`],
+m_paidB:[`{id} graded B (price reduced, buyer accepted). {amt} Frw sent to your mobile money.`,`{id} cyahawe amanota B (igiciro cyagabanyijwe, umuguzi yemeye). {amt} Frw yoherejwe kuri Mobile Money yawe.`,`{id} classé B (prix réduit, acheteur d'accord). {amt} Frw envoyés sur votre mobile money.`],
+m_cleared:[`{id} cleared for the market. Code {code}, valid next market day only. Carry your livestock relocation permit if you move animals.`,`{id} cyemerewe kujya ku isoko. Kode {code}, ifite agaciro ku munsi w'isoko ukurikira gusa. Fata uruhushya rwo kwimura amatungo niba uyimura.`,`{id} autorisé pour le marché. Code {code}, valable le prochain jour de marché uniquement. Munissez-vous de l'autorisation de déplacement si vous déplacez des animaux.`],
+m_held:[`{id} is on hold. Follow the expert's advice and bring it back for a new inspection. The buyer is refunded.`,`{id} cyahagaritswe. Kurikiza inama z'impuguke ukigarure kugenzurwa bundi bushya. Umuguzi arasubizwa amafaranga.`,`{id} est retenu. Suivez les conseils de l'expert et représentez-le pour une nouvelle inspection. L'acheteur est remboursé.`],
+m_rejected:[`{id} was not accepted. Contact the expert or the support line for the reason.`,`{id} ntikemewe. Vugana n'impuguke cyangwa ubufasha ku mpamvu.`,`{id} n'a pas été accepté. Contactez l'expert ou l'assistance pour en connaître la raison.`],
+m_advice:[`Expert advice for {id}: {txt}`,`Inama z'impuguke kuri {id}: {txt}`,`Conseils de l'expert pour {id} : {txt}`],
+
+mk_title:[`Buyer market`,`Isoko ry'abaguzi`,`Marché acheteur`],
+mk_all:[`All`,`Byose`,`Tout`],mk_crops:[`Crops`,`Imyaka`,`Cultures`],mk_live:[`Livestock`,`Amatungo`,`Bétail`],
+mk_checkup:[`Run the 19:00 checkup`,`Tangiza igenzura rya saa 19:00`,`Lancer le contrôle de 19h00`],
+mk_checkup_h:[`Simulates the Tuesday and Friday run: reserved items become sold, the rest ask for an expert check.`,`Bigereranya igenzura ryo Kuwa Kabiri no Kuwa Gatanu: ibyafashwe biba ibyaguzwe, ibisigaye bisaba igenzura ry'impuguke.`,`Simule l'exécution du mardi et du vendredi : les articles réservés sont vendus, les autres demandent un contrôle d'expert.`],
+mk_avail:[`Available now`,`Biboneka ubu`,`Disponible`],mk_reserve:[`Reserve and pay into escrow`,`Fata wishyure muri escrow`,`Réserver et payer sous séquestre`],
+mk_orders:[`Your orders`,`Ibyo wategetse`,`Vos commandes`],mk_none:[`Nothing available in this filter.`,`Nta kiboneka muri iki cyiciro.`,`Rien de disponible dans ce filtre.`],
+mk_escrow:[`Held in escrow`,`Biri muri escrow`,`Sous séquestre`],mk_seller:[`Seller`,`Umugurisha`,`Vendeur`],
+mk_note:[`Released to the farmer only after the expert approves.`,`Bishyirwa umuhinzi ari uko impuguke yemeje.`,`Libéré à l'agriculteur seulement après l'accord de l'expert.`],
+mk_total:[`Total`,`Yose hamwe`,`Total`],mk_each:[`each`,`kimwe`,`l'unité`],
+t_checkup:[`Checkup done: {s} sold, {u} unsold. SMS sent to {n} owners.`,`Igenzura ryarangiye: {s} byaguzwe, {u} ntibyaguzwe. SMS zoherejwe ku banyiri {n}.`,`Contrôle terminé : {s} vendus, {u} invendus. SMS envoyés à {n} propriétaires.`],
+t_reserved:[`Reserved. {amt} Frw held in escrow.`,`Byafashwe. {amt} Frw ari muri escrow.`,`Réservé. {amt} Frw sous séquestre.`],
+t_decided:[`Decision recorded. SMS sent to the farmer.`,`Icyemezo cyanditswe. SMS yoherejwe ku muhinzi.`,`Décision enregistrée. SMS envoyé à l'agriculteur.`],
+
+ex_title:[`Expert desk`,`Ibiro by'impuguke`,`Poste d'expert`],
+ex_intro:[`The expert checks what arrives, decides, and advises. The suggestion below is a guide. The licensed professional always makes the final call.`,`Impuguke igenzura ibyazanywe, igafata icyemezo ikanatanga inama. Icyifuzo kiri hasi ni icyerekezo. Umuhanga ufite uruhushya ni we ufata icyemezo cya nyuma.`,`L'expert contrôle ce qui arrive, décide et conseille. La suggestion ci-dessous est un guide. Le professionnel agréé tranche toujours.`],
+ex_agro:[`Agronomist`,`Umuhanga mu buhinzi`,`Agronome`],ex_vet:[`Veterinarian`,`Umuveterineri`,`Vétérinaire`],
+ex_lic:[`Licence checked against the registry (demo)`,`Uruhushya rugenzuwe mu bitabo by'abemewe (ubugerageza)`,`Licence vérifiée au registre (démo)`],
+ex_queue:[`To inspect`,`Bigomba kugenzurwa`,`À inspecter`],ex_empty:[`Queue empty. Run the 19:00 checkup in the Buyer market tab to create work.`,`Nta kigomba kugenzurwa. Tangiza igenzura rya saa 19:00 mu isoko ry'abaguzi.`,`File vide. Lancez le contrôle de 19h00 dans l'onglet Marché acheteur.`],
+ex_pick:[`Select an item from the queue.`,`Hitamo igicuruzwa ku rutonde.`,`Sélectionnez un article dans la file.`],
+ex_find:[`Findings`,`Ibyabonywe`,`Constats`],
+f_qty:[`Quantity matches the listing`,`Ingano ihuye n'iyanditswe`,`Quantité conforme à l'annonce`],f_yes:[`Yes`,`Yego`,`Oui`],f_no:[`No`,`Oya`,`Non`],
+f_moist:[`Moisture / dryness`,`Ubuhehere`,`Humidité`],f_ok:[`Acceptable`,`Bwemewe`,`Acceptable`],f_high:[`Too high`,`Bwinshi`,`Trop élevée`],
+f_dmg:[`Visible damage`,`Ibyononekaye`,`Dégâts visibles`],
+f_pest:[`Pests or disease`,`Udukoko cyangwa indwara`,`Ravageurs ou maladies`],f_none:[`None`,`Nta`,`Aucun`],f_minor:[`Minor`,`Buke`,`Léger`],f_serious:[`Serious`,`Bukabije`,`Grave`],
+f_tag:[`Ear tag matches the owner's record`,`Ikimenyetso cy'ugutwi gihuye n'inyandiko za nyiri itungo`,`Boucle d'oreille conforme au dossier du propriétaire`],f_tagn:[`Does not match`,`Ntihuye`,`Non conforme`],
+f_temp:[`Body temperature`,`Ubushyuhe bw'umubiri`,`Température corporelle`],f_bcs:[`Body condition (1 thin, 5 fat)`,`Imiterere y'umubiri (1 woroheje, 5 binini)`,`État corporel (1 maigre, 5 gras)`],
+f_vacc:[`Vaccinations up to date`,`Inkingo zikoze ku gihe`,`Vaccins à jour`],
+f_sym:[`Visible symptoms`,`Ibimenyetso bigaragara`,`Symptômes visibles`],
+sy_none:[`None`,`Nta`,`Aucun`],sy_skin:[`Skin lesions`,`Ibisebe ku ruhu`,`Lésions cutanées`],sy_resp:[`Cough or nasal discharge`,`Inkorora cyangwa amazuru atemba`,`Toux ou écoulement nasal`],sy_lame:[`Lameness`,`Kudashobora kugenda`,`Boiterie`],sy_diar:[`Diarrhoea`,`Impiswi`,`Diarrhée`],
+ex_reco:[`Suggested decision`,`Icyemezo gisabwa`,`Décision suggérée`],ex_dec:[`Your decision`,`Icyemezo cyawe`,`Votre décision`],
+d_approve:[`Approve`,`Emeza`,`Approuver`],d_downgrade:[`Downgrade to B`,`Gabanya agaciro (B)`,`Déclasser en B`],d_hold:[`Hold and treat`,`Hagarika ukize`,`Retenir et traiter`],d_reject:[`Reject`,`Anga`,`Rejeter`],
+r_pest:[`Serious pest or disease signs`,`Udukoko cyangwa indwara bikabije`,`Signes graves de ravageurs ou de maladie`],
+r_dmg:[`Damage above 15%`,`Ibyononekaye birenga 15%`,`Dégâts supérieurs à 15 %`],r_moist:[`Moisture too high`,`Ubuhehere bwinshi`,`Humidité trop élevée`],r_qty:[`Quantity differs from the listing`,`Ingano itandukanye n'iyanditswe`,`Quantité différente de l'annonce`],
+r_tag:[`Tag does not match the owner's record: possible theft, alert the admin`,`Ikimenyetso ntigihuye na nyiracyo: ubujura bushoboka, menyesha Admin`,`Boucle non conforme au dossier : vol possible, alerter l'admin`],
+r_sym:[`Visible symptoms`,`Ibimenyetso bigaragara`,`Symptômes visibles`],r_temp:[`Fever (39.5 °C or more)`,`Umuriro (39.5 °C cyangwa hejuru)`,`Fièvre (39,5 °C ou plus)`],
+r_vacc:[`Vaccination not up to date`,`Inkingo zitakozwe ku gihe`,`Vaccination non à jour`],r_bcs:[`Poor body condition`,`Imiterere mibi y'umubiri`,`Mauvais état corporel`],r_ok:[`All checks passed`,`Ibigenzurwa byose byujujwe`,`Tous les contrôles sont conformes`],
+ex_adv:[`Advice for the farmer`,`Inama ku muhinzi`,`Conseils à l'agriculteur`],
+ex_issue:[`Record decision and send SMS`,`Andika icyemezo wohereze SMS`,`Enregistrer et envoyer le SMS`],
+ex_sms:[`SMS sent to the farmer`,`SMS yoherejwe ku muhinzi`,`SMS envoyé à l'agriculteur`],
+ex_hist:[`Decided today`,`Byemejwe uyu munsi`,`Décidé aujourd'hui`],
+ex_sold:[`Sold: verify before payout`,`Cyaguzwe: genzura mbere yo kwishyura`,`Vendu : vérifier avant paiement`],ex_unsold:[`Unsold: check for clearance`,`Ntikiguzwe: genzura icyemezo`,`Invendu : contrôler pour autorisation`],
+a_sort:[`Sort out damaged tubers or grain before delivery. Grade A earns a better price.`,`Kuramo ibyononekaye mbere yo kubizana. Amanota A atanga igiciro cyiza.`,`Triez les tubercules ou grains abîmés avant livraison. La qualité A se vend mieux.`],
+a_dry:[`Dry beans to about 14% moisture before bagging to avoid mould.`,`Kuma ibishyimbo bigere kuri 14% by'ubuhehere mbere yo kubipakira kugira ngo bidasaduka.`,`Séchez les haricots à environ 14 % d'humidité avant ensachage pour éviter les moisissures.`],
+a_recount:[`Weigh produce before listing so the quantity matches.`,`Pima umusaruro mbere yo kuwandikisha kugira ngo ingano ihure.`,`Pesez la récolte avant l'annonce pour que la quantité soit exacte.`],
+a_pest:[`Scout for pests twice a week and treat early, following the agronomist's guidance.`,`Genzura udukoko kabiri mu cyumweru kandi uvure hakiri kare ukurikije inama z'umuhanga mu buhinzi.`,`Surveillez les ravageurs deux fois par semaine et traitez tôt selon les conseils de l'agronome.`],
+a_seed:[`Use certified seed next season to raise yield and quality.`,`Koresha imbuto yemewe mu gihembwe gitaha kugira ngo umusaruro n'ubwiza byiyongere.`,`Utilisez des semences certifiées la saison prochaine pour de meilleurs rendements.`],
+a_rotate:[`Rotate potatoes with cereals or beans to cut disease build-up.`,`Hinduranya ibirayi n'ibinyampeke cyangwa ibishyimbo kugira ngo indwara zigabanuke.`,`Alternez pommes de terre et céréales ou haricots pour réduire les maladies.`],
+a_isolate:[`Keep the animal apart from the herd and give it clean water.`,`Tandukanya itungo n'andi ritange amazi meza.`,`Séparez l'animal du troupeau et donnez-lui de l'eau propre.`],
+a_callvet:[`Do not move or sell the animal until the veterinarian clears it.`,`Ntukimure cyangwa ngo urigurishe umuveterineri atarikwemeza.`,`Ne déplacez ni ne vendez l'animal avant l'accord du vétérinaire.`],
+a_report:[`The veterinarian reports suspected notifiable disease to the district veterinary authority.`,`Umuveterineri amenyesha ubuyobozi bw'ubuveterineri bw'akarere indwara ikekwa ko igomba gutangazwa.`,`Le vétérinaire signale toute maladie à déclaration obligatoire suspectée à l'autorité vétérinaire du district.`],
+a_vaccinate:[`Vaccinate on the schedule set by your sector veterinarian, then present the animal again.`,`Kingira ku gihe ukurikije gahunda y'umuveterineri w'umurenge, hanyuma uzane itungo bundi bushya.`,`Vaccinez selon le calendrier du vétérinaire de secteur, puis représentez l'animal.`],
+a_feed:[`Improve feed and mineral supply. Thin animals fetch lower prices.`,`Ongera ibiryo n'imyunyu ngugu. Amatungo yoroheje agurwa make.`,`Améliorez l'alimentation et les minéraux. Les animaux maigres se vendent moins cher.`],
+a_water:[`Give clean water daily and shade to keep animals productive.`,`Tanga amazi meza buri munsi n'igicucu kugira ngo amatungo atange umusaruro.`,`Donnez de l'eau propre chaque jour et de l'ombre pour garder les animaux productifs.`],
+
+bz_title:[`Business model and SuperAdmin view`,`Icyitegererezo cy'ubucuruzi n'icyerekezo cya SuperAdmin`,`Modèle économique et vue SuperAdmin`],
+bz_g:[`Fees collected`,`Amafaranga yakusanyijwe`,`Frais collectés`],bz_e:[`Paid to experts`,`Yahawe impuguke`,`Versé aux experts`],bz_n:[`Platform keeps`,`Asigaye kuri sisitemu`,`Reste à la plateforme`],bz_i:[`Items by status`,`Ibicuruzwa ku miterere`,`Articles par statut`],
+bz_cfg:[`Rates (SuperAdmin sets these)`,`Ibiciro (SuperAdmin ni we ubishyiraho)`,`Taux (fixés par le SuperAdmin)`],
+c_reg:[`Registration (Frw)`,`Kwiyandikisha (Frw)`,`Inscription (Frw)`],c_list:[`Listing (Frw)`,`Kwandikisha (Frw)`,`Annonce (Frw)`],c_comm:[`Trade commission (%)`,`Komisiyo y'ubucuruzi (%)`,`Commission (%)`],c_clear:[`Clearance (Frw)`,`Icyemezo (Frw)`,`Certificat (Frw)`],c_share:[`Expert share of commission (%)`,`Umugabane w'impuguke kuri komisiyo (%)`,`Part de l'expert (%)`],
+bz_led:[`Fee ledger`,`Igitabo cy'amafaranga`,`Registre des frais`],lg_reg:[`Registration`,`Kwiyandikisha`,`Inscription`],lg_list:[`Listing`,`Kwandikisha`,`Annonce`],lg_comm:[`Trade commission`,`Komisiyo y'ubucuruzi`,`Commission de vente`],lg_clear:[`Clearance`,`Icyemezo`,`Certificat`],
+lg_type:[`Type`,`Ubwoko`,`Type`],lg_ref:[`Reference`,`Indango`,`Référence`],lg_amt:[`Amount`,`Amafaranga`,`Montant`],lg_exp:[`To expert`,`Ku mpuguke`,`À l'expert`],
+bz_aud:[`Audit log`,`Igitabo cy'ibikozwe`,`Journal d'audit`],
+au_list:[`Listing {id} created by farmer {o}`,`{id} cyanditswe n'umuhinzi {o}`,`Annonce {id} créée par l'agriculteur {o}`],
+au_check:[`Checkup ran: {s} sold, {u} unsold`,`Igenzura ryakozwe: {s} byaguzwe, {u} ntibyaguzwe`,`Contrôle exécuté : {s} vendus, {u} invendus`],
+au_dec:[`{who} decided {dec} on {id}`,`{who} yafashe icyemezo {dec} kuri {id}`,`{who} a décidé {dec} pour {id}`],
+au_flag:[`ALERT: tag mismatch on {id}, possible theft`,`ITABAZWA: ikimenyetso ntigihuye kuri {id}, ubujura bushoboka`,`ALERTE : boucle non conforme sur {id}, vol possible`],
+au_res:[`Buyer reserved {id}, {amt} Frw in escrow`,`Umuguzi yafashe {id}, {amt} Frw muri escrow`,`Acheteur a réservé {id}, {amt} Frw sous séquestre`],
+bz_calc:[`Monthly model for one cell`,`Icyitegererezo cya buri kwezi cy'akagari kamwe`,`Modèle mensuel pour une cellule`],
+k_farmers:[`Active farmers`,`Abahinzi bakora`,`Agriculteurs actifs`],k_lpw:[`Listings per farmer per week`,`Ibyandikwa kuri buri muhinzi mu cyumweru`,`Annonces par agriculteur et par semaine`],k_val:[`Average sale value (Frw)`,`Impuzandengo y'igicuruzwa (Frw)`,`Valeur moyenne d'une vente (Frw)`],k_sell:[`Share that sells (%)`,`Ijanisha ry'ibyagurishijwe (%)`,`Part vendue (%)`],k_exp:[`Experts in the cell`,`Impuguke mu kagari`,`Experts dans la cellule`],k_gain:[`Price gain vs broker (%)`,`Inyongera ku giciro ugereranyije n'umukomisiyoneri (%)`,`Gain de prix vs courtier (%)`],
+o_vol:[`Trade volume`,`Agaciro k'ubucuruzi`,`Volume d'échanges`],o_comm:[`Commission`,`Komisiyo`,`Commission`],o_fees:[`Listing and clearance fees`,`Amafaranga yo kwandikisha n'ibyemezo`,`Frais d'annonce et de certificat`],o_pool:[`Expert pool`,`Amafaranga y'impuguke`,`Enveloppe des experts`],o_per:[`Per expert, per month`,`Kuri buri mpuguke, ku kwezi`,`Par expert et par mois`],o_net:[`Platform keeps`,`Asigaye kuri sisitemu`,`Reste à la plateforme`],o_farm:[`Extra income for farmers`,`Inyongera y'amafaranga y'abahinzi`,`Revenu supplémentaire des agriculteurs`],
+calc_note:[`Illustrative assumptions for discussion, not a forecast. Half of unsold lots are assumed to request a clearance, and the expert receives half of each clearance fee.`,`Ni ibitekerezo byo kuganiraho, si iteganyagihe. Hateganyijwe ko kimwe cya kabiri cy'ibitaguzwe gisaba icyemezo, kandi impuguke ihabwa kimwe cya kabiri cy'amafaranga y'icyemezo.`,`Hypothèses illustratives pour la discussion, pas une prévision. On suppose que la moitié des invendus demande un certificat et que l'expert reçoit la moitié de chaque frais de certificat.`],
+bz_ver:[`Next market day`,`Umunsi w'isoko ukurikira`,`Prochain jour de marché`]
+};
+const T=(k,p={})=>{const a=L[k];if(!a)return k;const s=a[LI()]||a[0];return s.replace(/\{(\w+)\}/g,(m,x)=>p[x]!==undefined?p[x]:m)};
+const fmt=n=>Math.round(n).toLocaleString(lang==='fr'?'fr-FR':'en-US');
+
+/* ---------- data ---------- */
+const CROPS=[{c:'POT',u:'bag'},{c:'BEA',u:'kg'},{c:'MAI',u:'kg'},{c:'BAN',u:'bunch'},{c:'PEA',u:'kg'}];
+const ANIM=[{c:'COW',u:'head'},{c:'GOA',u:'head'},{c:'PIG',u:'head'},{c:'SHE',u:'head'}];
+const ALL=[...CROPS,...ANIM];
+const nameOf=c=>T('n_'+c.toLowerCase());
+const unitOf=c=>T('un_'+ALL.find(x=>x.c===c).u);
+const cfg={reg:500,list:20,comm:2,clear:100,share:40};
+const BUYER='B-2210';
+let nextN=124;
+const items=[
+ {id:'POT-2026-000118',c:'POT',kind:'crop',qty:6,price:28000,village:'Mana',owner:'F-0412',status:'active'},
+ {id:'BEA-2026-000119',c:'BEA',kind:'crop',qty:120,price:900,village:'Ruhuha',owner:'F-0377',status:'active'},
+ {id:'COW-2026-000120',c:'COW',kind:'live',qty:1,price:420000,village:'Mana',owner:'F-0391',status:'sold',buyer:BUYER},
+ {id:'GOA-2026-000121',c:'GOA',kind:'live',qty:3,price:45000,village:'Mugano',owner:'F-0298',status:'unsold'},
+ {id:'BAN-2026-000122',c:'BAN',kind:'crop',qty:25,price:3500,village:'Ruhuha',owner:'F-0377',status:'active'},
+ {id:'PEA-2026-000123',c:'PEA',kind:'crop',qty:80,price:700,village:'Mana',owner:'F-0352',status:'active'}
+];
+const inbox=[];
+const ledger=[];
+const audit=[];
+const decided=[];
+const now=()=>new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+const led=(type,amt,exp,ref)=>ledger.unshift({type,amt,exp,ref});
+const aud=(k,p)=>audit.unshift({k,p,at:now()});
+for(let i=0;i<4;i++)led('reg',cfg.reg,0,'F-'+['0412','0377','0391','0298'][i]);
+items.forEach(i=>led('list',cfg.list,0,i.id));
+aud('au_list',{id:'GOA-2026-000121',o:'F-0298'});
+let st={tab:'overview',filter:'all',sel:null,last:null};
+
+/* ---------- actions ---------- */
+function addListing(def,qty,price){
+  const id=`${def.c}-2026-${String(nextN++).padStart(6,'0')}`;
+  const it={id,c:def.c,kind:CROPS.includes(def)?'crop':'live',qty,price,village:'Mana',owner:'F-0412',status:'active'};
+  items.push(it);led('list',cfg.list,0,id);
+  inbox.unshift({t:'listed',id,c:def.c,qty,fee:cfg.list});
+  aud('au_list',{id,o:it.owner});
+  return it;
+}
+function reserve(id){
+  const it=items.find(x=>x.id===id);if(!it||it.status!=='active')return;
+  it.status='reserved';it.buyer=BUYER;
+  aud('au_res',{id,amt:fmt(it.qty*it.price)});
+  toast(T('t_reserved',{amt:fmt(it.qty*it.price)}));render();
+}
+function runCheckup(){
+  let s=0,u=0;
+  items.forEach(it=>{
+    if(it.status==='reserved'){it.status='sold';s++;inbox.unshift({t:'sold',id:it.id});}
+    else if(it.status==='active'){it.status='unsold';u++;inbox.unshift({t:'unsold',id:it.id});}
+  });
+  aud('au_check',{s,u});
+  toast(T('t_checkup',{s,u,n:s+u}));render();
+}
+function reco(it,f){
+  const r=[];let dec='approve',adv=[];
+  if(it.kind==='crop'){
+    if(f.pest==='serious'){dec='hold';r.push('r_pest');adv.push('a_pest','a_sort');}
+    else{
+      if(+f.dmg>15){dec='downgrade';r.push('r_dmg');adv.push('a_sort');}
+      if(f.moist==='high'){dec='downgrade';r.push('r_moist');adv.push('a_dry');}
+      if(f.qty==='no'){dec='downgrade';r.push('r_qty');adv.push('a_recount');}
+      if(f.pest==='minor')adv.push('a_pest');
+    }
+    if(!r.length){r.push('r_ok');adv.push(it.c==='POT'?'a_rotate':'a_seed');}
+  }else{
+    if(f.tag==='no'){dec='reject';r.push('r_tag');}
+    else if(f.sym!=='none'||+f.temp>=39.5){
+      dec='hold';if(f.sym!=='none')r.push('r_sym');if(+f.temp>=39.5)r.push('r_temp');
+      adv.push('a_isolate','a_callvet');if(f.sym==='skin'||f.sym==='resp')adv.push('a_report');
+    }else{
+      if(f.vacc==='no'){dec='downgrade';r.push('r_vacc');adv.push('a_vaccinate');}
+      if(+f.bcs<=2){dec='downgrade';r.push('r_bcs');adv.push('a_feed');}
+      if(!r.length){r.push('r_ok');adv.push('a_water');}
+    }
+  }
+  return{dec,r,adv:[...new Set(adv)]};
+}
+function decide(it,dec,advKeys){
+  const msgs=[];const who=it.kind==='crop'?'ex_agro':'ex_vet';
+  if(it.status==='sold'){
+    if(dec==='approve'||dec==='downgrade'){
+      const gross=it.qty*it.price*(dec==='downgrade'?0.85:1);
+      const comm=gross*cfg.comm/100;
+      led('comm',comm,comm*cfg.share/100,it.id);
+      it.status='paid';msgs.push({t:dec==='approve'?'paid':'paidB',id:it.id,amt:Math.round(gross-comm)});
+    }else if(dec==='hold'){it.status='held';msgs.push({t:'held',id:it.id});}
+    else{it.status='rejected';msgs.push({t:'rejected',id:it.id});}
+  }else{
+    if(dec==='approve'||dec==='downgrade'){
+      const code=Math.floor(1000+Math.random()*9000);
+      it.status='cleared';it.code=code;led('clear',cfg.clear,cfg.clear*0.5,it.id);
+      msgs.push({t:'cleared',id:it.id,code});
+    }else if(dec==='hold'){it.status='held';msgs.push({t:'held',id:it.id});}
+    else{it.status='rejected';msgs.push({t:'rejected',id:it.id});}
+  }
+  if(advKeys.length)msgs.push({t:'advice',id:it.id,keys:advKeys});
+  inbox.unshift(...msgs);
+  aud('au_dec',{who:T(who),dec:T('d_'+dec),id:it.id});
+  if(it.kind==='live'&&dec==='reject')aud('au_flag',{id:it.id});
+  decided.unshift({id:it.id,dec,who});
+  st.last={id:it.id,msgs};st.sel=null;
+  toast(T('t_decided'));render();
+}
+const msgText=m=>{
+  if(m.t==='listed')return T('m_listed',{id:m.id,qty:m.qty,unit:unitOf(m.c),name:nameOf(m.c),fee:m.fee});
+  if(m.t==='advice')return T('m_advice',{id:m.id,txt:m.keys.map(k=>T(k)).join(' ')});
+  return T('m_'+m.t,{id:m.id,amt:m.amt!==undefined?fmt(m.amt):'',code:m.code});
+};
+const statusPill=s=>{const cls={paid:'good',cleared:'good',held:'warn',rejected:'bad',sold:'blue',unsold:'warn',reserved:'blue',active:''}[s]||'';return `<span class="pill ${cls}">${T('s_'+s)}</span>`};
+const smsHtml=m=>`<div class="sms"><div class="meta">E-Soko · ${m.id}</div>${msgText(m)}</div>`;
+
+let tTimer;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.hidden=false;clearTimeout(tTimer);tTimer=setTimeout(()=>t.hidden=true,3200)}
+
+/* ---------- USSD ---------- */
+let U={s:'idle',d:{}};
+function ussdScreen(){
+  const d=U.d;
+  switch(U.s){
+    case 'idle':return null;
+    case 'menu':return T('u_menu');
+    case 'crop':return T('u_crop',Object.fromEntries(CROPS.map((c,i)=>['abcde'[i],nameOf(c.c)])));
+    case 'live':return T('u_live',Object.fromEntries(ANIM.map((c,i)=>['abcd'[i],nameOf(c.c)])));
+    case 'qty':return T('u_qty',{name:nameOf(d.p.c),unit:unitOf(d.p.c)});
+    case 'price':return T('u_price',{unit:unitOf(d.p.c)});
+    case 'conf':return T('u_conf',{qty:d.q,unit:unitOf(d.p.c),name:nameOf(d.p.c),price:fmt(d.pr),fee:cfg.list});
+    case 'done':return T('u_done',{id:d.id});
+    case 'mine':{const mine=items.filter(i=>i.owner==='F-0412');return T('u_mine')+'\n'+(mine.length?mine.map(i=>`${i.id.slice(0,3)}…${i.id.slice(-3)} ${T('s_'+i.status).split(',')[0]}`).join('\n'):T('u_mine_none'))+'\n0. Menu';}
+    case 'adv':return T('u_adv');
+    case 'advc':return T('u_advc');
+    case 'advl':return T('u_advl');
+    case 'lang':return T('u_lang');
+  }
+}
+function ussdSend(v){
+  v=(v||'').trim();const d=U.d;
+  switch(U.s){
+    case 'menu':U.s={1:'crop',2:'live',3:'mine',4:'adv',5:'lang'}[v]||'menu';break;
+    case 'crop':if(v==='0')U.s='menu';else if(CROPS[v-1]){d.p=CROPS[v-1];U.s='qty';}break;
+    case 'live':if(v==='0')U.s='menu';else if(ANIM[v-1]){d.p=ANIM[v-1];U.s='qty';}break;
+    case 'qty':if(+v>0){d.q=+v;U.s='price';}break;
+    case 'price':if(+v>0){d.pr=+v;U.s='conf';}break;
+    case 'conf':if(v==='1'){const it=addListing(d.p,d.q,d.pr);d.id=it.id;U.s='done';toast(it.id);}else if(v==='2')U.s='menu';break;
+    case 'done':case 'mine':U.s='menu';break;
+    case 'adv':U.s=v==='1'?'advc':v==='2'?'advl':v==='0'?'menu':'adv';break;
+    case 'advc':case 'advl':U.s='adv';break;
+    case 'lang':{const l=LANGS[v-1];if(l){setLang(l);}U.s='menu';break;}
+  }
+  renderPhone(true);
+}
+
+/* ---------- views ---------- */
+const ICON={crop:`<svg viewBox="0 0 24 24"><path d="M12 21V9M12 9c0-3 2-5 5-5 0 3-2 5-5 5ZM12 13c0-3-2-5-5-5 0 3 2 5 5 5Z"/></svg>`,live:`<svg viewBox="0 0 24 24"><path d="M4 10c0-2 2-3 4-3h8c2 0 4 1 4 3v4H4v-4ZM6 14v5M18 14v5M4 10 2 8M20 10l2-2"/></svg>`};
+const SRC=[
+['Cenfri: eSoko price data from 60+ markets','https://nextbillion.net/data-driven-policymaking-digitalisation-rwanda-impact-improved-storage-agriculture-digital-data'],
+['i2i: AgriGO, USSD, web and SMS farmer records','https://finmark.org.za/system/documents/files/000/000/069/original/AgriGO_-_A_farmer\'s_financial_tool_to_grow_greater_finanical_harvest_i2i_July_2018.pdf?1532604835'],
+['M-LIMA platform presentation','https://blog.horticulture.ucdavis.edu/sites/g/files/dgvnsk1816/files/extension_material_files/M-LIMA%20PLATFORM%20Presentation%20final.pdf'],
+['New Times: AMIS, Rwanda\'s digital infrastructure for smart agriculture','https://www.newtimes.co.rw/article/27863/news/featured/amis-rwandas-digital-infrastructure-for-smart-agriculture/amp'],
+['MINAGRI: Veterinary Sanitary Mandate and digital licensing (veterinarian counts)','https://www.minagri.gov.rw/updates/news-details/minagri-launches-veterinary-sanitary-mandate-policy-and-related-digital-licensing-system'],
+['Irembo: how to apply for livestock relocation','https://support.irembo.gov.rw/en/support/solutions/articles/47001266795-how-to-apply-for-livestock-relocation-'],
+['IGC: digital information channels in the Rwandan potato value chain (low usage finding)','https://www.theigc.org/sites/default/files/2020/10/Fishman-et-al-2019-policy-brief.pdf']
+];
+function vOverview(){
+  return `
+  <div class="hero"><h1>${T('ov_h1')}</h1><p class="lead">${T('ov_p')}</p>
+    <div class="row"><button class="btn primary" data-go="phone">${T('ov_cta1')}</button><button class="btn" data-go="expert">${T('ov_cta2')}</button></div></div>
+  <section><h2>${T('ov_week')}</h2><div class="card week">
+    ${[1,2,3].map(i=>`<div><div class="when">${T('w'+i+'t')}</div><p>${T('w'+i+'p')}</p></div>`).join('')}</div></section>
+  <section><h2>${T('ov_why')}</h2><div class="grid g2">
+    ${[1,2,3,4].map(i=>`<div class="card stack"><h3>${T('d'+i+'t')}</h3><p class="muted">${T('d'+i+'p')}</p></div>`).join('')}</div></section>
+  <section><h2>${T('ov_fit')}</h2><div class="tblwrap"><table><thead><tr><th>${T('fit1')}</th><th>${T('fit2')}</th><th>${T('fit3')}</th></tr></thead><tbody>
+    ${[1,2,3,4,5].map(i=>`<tr><td><b>${T('f'+i+'n')}</b></td><td>${T('f'+i+'d')}</td><td>${T('f'+i+'r')}</td></tr>`).join('')}</tbody></table></div>
+    <div class="stack" style="margin-top:14px"><p class="note">${T('ov_gap')}</p><p class="note blue">${T('ov_lesson')}</p></div></section>`;
+}
+function vPhone(){
+  const scr=ussdScreen();
+  return `<div class="grid g2" style="align-items:start">
+    <div class="stack"><h2>${T('ph_title')}</h2><p class="muted">${T('ph_hint')}</p>
+      <div class="device"><div class="speaker"></div>
+        <div class="lcd ${scr===null?'idle':''}" id="lcd" aria-live="polite">${scr===null?T('u_idle'):esc(scr)}</div>
+        <form class="dial" id="dialf"><input id="ussdIn" inputmode="numeric" autocomplete="off" aria-label="USSD input" ${scr===null?'disabled':''}><button type="submit" ${scr===null?'disabled':''}>${T('ph_send')}</button></form>
+        <div class="devbtns"><button id="dialb">${T('ph_dial')}</button><button id="resetb">${T('ph_reset')}</button></div>
+      </div></div>
+    <div class="stack"><h2>${T('inbox_t')}</h2>${inbox.length?inbox.slice(0,8).map(smsHtml).join(''):`<p class="muted">${T('inbox_empty')}</p>`}</div></div>`;
+}
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function renderPhone(focus){render();if(focus){const i=document.getElementById('ussdIn');if(i&&!i.disabled)i.focus();}}
+function bindPhone(){
+  document.getElementById('dialb').onclick=()=>{U={s:'menu',d:{}};renderPhone(true)};
+  document.getElementById('resetb').onclick=()=>{U={s:'idle',d:{}};render()};
+  document.getElementById('dialf').onsubmit=e=>{e.preventDefault();const i=document.getElementById('ussdIn');const v=i.value;ussdSend(v)};
+}
+function vMarket(){
+  const avail=items.filter(i=>i.status==='active'&&(st.filter==='all'||i.kind===st.filter));
+  const orders=items.filter(i=>i.buyer===BUYER);
+  const held=items.filter(i=>i.status==='reserved'||i.status==='sold').reduce((a,i)=>a+i.qty*i.price,0);
+  return `<div class="row sp"><h2>${T('mk_title')}</h2>
+    <div class="row"><div class="row" role="group">${['all','crop','live'].map(f=>`<button class="chip" data-f="${f}" aria-pressed="${st.filter===f}">${T(f==='all'?'mk_all':f==='crop'?'mk_crops':'mk_live')}</button>`).join('')}</div></div></div>
+    <div class="card row sp" style="margin-top:14px"><div><b>${T('mk_checkup')}</b><div class="muted" style="font-size:13px">${T('mk_checkup_h')}</div></div><button class="btn gold" id="chk">${T('mk_checkup')}</button></div>
+    <section><h2>${T('mk_avail')}</h2>${avail.length?`<div class="grid g3">${avail.map(card).join('')}</div>`:`<p class="muted">${T('mk_none')}</p>`}</section>
+    <section><div class="row sp"><h2>${T('mk_orders')}</h2><span class="pill blue">${T('mk_escrow')}: ${fmt(held)} Frw</span></div>
+      <p class="muted" style="margin:0 0 12px">${T('mk_note')}</p>
+      ${orders.length?`<div class="tblwrap"><table><thead><tr><th>ID</th><th></th><th class="num">${T('mk_total')} (Frw)</th><th></th></tr></thead><tbody>${orders.map(i=>`<tr><td class="mono">${i.id}</td><td>${i.qty} ${unitOf(i.c)} ${nameOf(i.c)}</td><td class="num">${fmt(i.qty*i.price)}</td><td>${statusPill(i.status)}</td></tr>`).join('')}</tbody></table></div>`:`<p class="muted">${T('mk_none')}</p>`}</section>`;
+}
+function card(i){
+  return `<div class="card item"><div class="row"><span class="ico">${ICON[i.kind]}</span><div><div class="nm">${nameOf(i.c)}</div><div class="kv"><span>${i.qty} ${unitOf(i.c)}</span></div></div></div>
+   <div class="price">${fmt(i.price)} Frw ${T('mk_each')} · ${T('mk_total')} ${fmt(i.qty*i.price)} Frw</div>
+   <div class="kv"><span>${i.village}</span><span>${T('mk_seller')} ${i.owner}</span><span class="mono">${i.id}</span></div>
+   <button class="btn primary" data-res="${i.id}">${T('mk_reserve')}</button></div>`;
+}
+let F={};
+function defaults(it){return it.kind==='crop'?{qty:'yes',moist:'ok',dmg:4,pest:'none'}:{tag:'yes',temp:38.6,bcs:3,vacc:'yes',sym:'none'}}
+function vExpert(){
+  const q=items.filter(i=>i.status==='sold'||i.status==='unsold');
+  const it=items.find(i=>i.id===st.sel);
+  return `<h2>${T('ex_title')}</h2><p class="muted" style="margin-top:6px;max-width:70ch">${T('ex_intro')}</p>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));margin-top:18px;align-items:start">
+   <div class="stack"><h3>${T('ex_queue')} (${q.length})</h3>
+     ${q.length?q.map(i=>`<button class="qitem" data-sel="${i.id}" aria-pressed="${st.sel===i.id}"><span class="ico">${ICON[i.kind]}</span><span class="stack" style="gap:2px"><b>${nameOf(i.c)} · ${i.qty} ${unitOf(i.c)}</b><span class="mono muted" style="font-size:12px">${i.id}</span><span class="pill ${i.status==='sold'?'blue':'warn'}" style="align-self:flex-start">${T(i.status==='sold'?'ex_sold':'ex_unsold')}</span></span></button>`).join(''):`<p class="muted">${T('ex_empty')}</p>`}
+     ${decided.length?`<h3 style="margin-top:8px">${T('ex_hist')}</h3>${decided.slice(0,5).map(d=>`<div class="row sp card" style="padding:10px 12px"><span class="mono" style="font-size:12px">${d.id}</span><span class="pill">${T('d_'+d.dec)}</span></div>`).join('')}`:''}
+   </div>
+   <div class="stack">${it?inspectForm(it):(st.last?lastBox():`<div class="card muted">${T('ex_pick')}</div>`)}</div></div>`;
+}
+function lastBox(){return `<div class="card stack"><h3>${T('ex_sms')}</h3>${st.last.msgs.map(smsHtml).join('')}</div>`}
+function sel(id,opts,val,lab){return `<div class="field"><label for="${id}">${lab}</label><select id="${id}">${opts.map(([v,t])=>`<option value="${v}" ${val==v?'selected':''}>${t}</option>`).join('')}</select></div>`}
+function rng(id,min,max,step,val,lab,unit){return `<div class="field"><label for="${id}">${lab}: <span class="val" id="${id}v">${val}${unit||''}</span></label><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"></div>`}
+function inspectForm(it){
+  if(!F[it.id])F[it.id]={...defaults(it),dec:null,adv:null};
+  const f=F[it.id];
+  const prof=it.kind==='crop'?'ex_agro':'ex_vet';
+  const fields=it.kind==='crop'
+    ?sel('f_qty',[['yes',T('f_yes')],['no',T('f_no')]],f.qty,T('f_qty'))+sel('f_moist',[['ok',T('f_ok')],['high',T('f_high')]],f.moist,T('f_moist'))+rng('f_dmg',0,40,1,f.dmg,T('f_dmg'),'%')+sel('f_pest',[['none',T('f_none')],['minor',T('f_minor')],['serious',T('f_serious')]],f.pest,T('f_pest'))
+    :sel('f_tag',[['yes',T('f_yes')],['no',T('f_tagn')]],f.tag,T('f_tag'))+rng('f_temp',37.5,41,0.1,f.temp,T('f_temp'),' °C')+rng('f_bcs',1,5,1,f.bcs,T('f_bcs'))+sel('f_vacc',[['yes',T('f_yes')],['no',T('f_no')]],f.vacc,T('f_vacc'))+sel('f_sym',[['none',T('sy_none')],['skin',T('sy_skin')],['resp',T('sy_resp')],['lame',T('sy_lame')],['diar',T('sy_diar')]],f.sym,T('f_sym'));
+  const r=reco(it,f);
+  if(f.dec===null)f.dec=r.dec;
+  return `<div class="card stack">
+    <div class="row sp"><div class="row"><span class="ico">${ICON[it.kind]}</span><div><b>${nameOf(it.c)} · ${it.qty} ${unitOf(it.c)}</b><div class="mono muted" style="font-size:12px">${it.id} · ${it.village} · ${it.owner}</div></div></div>
+      <div style="text-align:right"><span class="pill good">${T(prof)}</span><div class="muted" style="font-size:12px">${T('ex_lic')}</div></div></div>
+    <h3>${T('ex_find')}</h3><div class="grid g2" id="fields">${fields}</div>
+    <div class="reco" id="reco"></div>
+    <h3>${T('ex_dec')}</h3><div class="decs" id="decs">${['approve','downgrade','hold','reject'].map(d=>`<button data-d="${d}" aria-pressed="${f.dec===d}">${T('d_'+d)}</button>`).join('')}</div>
+    <h3>${T('ex_adv')}</h3><div class="checks" id="advs"></div>
+    <button class="btn primary" id="issue">${T('ex_issue')}</button></div>`;
+}
+function readForm(it){
+  const f=F[it.id];const g=id=>document.getElementById(id);
+  if(it.kind==='crop'){f.qty=g('f_qty').value;f.moist=g('f_moist').value;f.dmg=g('f_dmg').value;f.pest=g('f_pest').value;g('f_dmgv').textContent=f.dmg+'%';}
+  else{f.tag=g('f_tag').value;f.temp=g('f_temp').value;f.bcs=g('f_bcs').value;f.vacc=g('f_vacc').value;f.sym=g('f_sym').value;g('f_tempv').textContent=(+f.temp).toFixed(1)+' °C';g('f_bcsv').textContent=f.bcs;}
+}
+function refreshReco(it,fromInput){
+  const f=F[it.id];const r=reco(it,f);
+  if(fromInput){f.dec=r.dec;f.adv=null;}
+  if(f.adv===null)f.adv=[...r.adv];
+  document.getElementById('reco').innerHTML=`<div class="row sp"><b>${T('ex_reco')}: ${T('d_'+r.dec)}</b></div><ul style="margin:6px 0 0;padding-left:18px">${r.r.map(k=>`<li>${T(k)}</li>`).join('')}</ul>`;
+  document.querySelectorAll('#decs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.d===f.dec)));
+  const pool=it.kind==='crop'?['a_sort','a_dry','a_recount','a_pest','a_seed','a_rotate']:['a_isolate','a_callvet','a_report','a_vaccinate','a_feed','a_water'];
+  document.getElementById('advs').innerHTML=pool.map(k=>`<label><input type="checkbox" value="${k}" ${f.adv.includes(k)?'checked':''}>${T(k)}</label>`).join('');
+  document.querySelectorAll('#advs input').forEach(c=>c.onchange=()=>{f.adv=[...document.querySelectorAll('#advs input:checked')].map(x=>x.value)});
+}
+function bindExpert(){
+  document.querySelectorAll('[data-sel]').forEach(b=>b.onclick=()=>{st.sel=b.dataset.sel;st.last=null;render()});
+  const it=items.find(i=>i.id===st.sel);if(!it)return;
+  document.querySelectorAll('#fields select,#fields input').forEach(e=>e.oninput=()=>{readForm(it);refreshReco(it,true)});
+  document.querySelectorAll('#decs button').forEach(b=>b.onclick=()=>{F[it.id].dec=b.dataset.d;refreshReco(it,false)});
+  document.getElementById('issue').onclick=()=>{const f=F[it.id];decide(it,f.dec,f.adv||[])};
+  refreshReco(it,false);
+}
+function totals(){const g=ledger.reduce((a,l)=>a+l.amt,0),e=ledger.reduce((a,l)=>a+l.exp,0);return{g,e,n:g-e}}
+function vBusiness(){
+  const tt=totals();const by={reg:0,list:0,comm:0,clear:0};ledger.forEach(l=>by[l.type]+=l.amt);const mx=Math.max(1,...Object.values(by));
+  const sts=['active','reserved','sold','unsold','paid','cleared','held','rejected'];
+  return `<h2>${T('bz_title')}</h2>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card kpi"><span class="eyebrow">${T('bz_g')}</span><b>${fmt(tt.g)} Frw</b></div>
+    <div class="card kpi"><span class="eyebrow">${T('bz_e')}</span><b>${fmt(tt.e)} Frw</b></div>
+    <div class="card kpi"><span class="eyebrow">${T('bz_n')}</span><b>${fmt(tt.n)} Frw</b></div></div>
+  <section><h2>${T('bz_cfg')}</h2><div class="card cfg" id="cfg">
+    ${[['reg','c_reg'],['list','c_list'],['comm','c_comm'],['clear','c_clear'],['share','c_share']].map(([k,l])=>`<label>${T(l)}<input type="number" min="0" step="${k==='comm'?0.5:10}" id="cfg_${k}" value="${cfg[k]}"></label>`).join('')}</div></section>
+  <section><div class="grid g2" style="align-items:start">
+    <div class="stack"><h2>${T('bz_led')}</h2>
+      <div class="card stack">${['reg','list','comm','clear'].map(k=>`<div class="stack" style="gap:4px"><div class="row sp"><span>${T('lg_'+k)}</span><span class="mono">${fmt(by[k])} Frw</span></div><div class="bar"><i style="width:${by[k]/mx*100}%"></i></div></div>`).join('')}</div>
+      <div class="tblwrap"><table><thead><tr><th>${T('lg_type')}</th><th>${T('lg_ref')}</th><th class="num">${T('lg_amt')}</th><th class="num">${T('lg_exp')}</th></tr></thead><tbody>${ledger.slice(0,6).map(l=>`<tr><td>${T('lg_'+l.type)}</td><td class="mono" style="font-size:12px">${l.ref}</td><td class="num">${fmt(l.amt)}</td><td class="num">${fmt(l.exp)}</td></tr>`).join('')}</tbody></table></div></div>
+    <div class="stack"><h2>${T('bz_i')}</h2><div class="card row">${sts.map(s=>`${statusPill(s)} <b>${items.filter(i=>i.status===s).length}</b>`).join(' &nbsp; ')}</div>
+      <h2>${T('bz_aud')}</h2><div class="card stack" style="gap:8px">${audit.slice(0,6).map(a=>`<div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="mono muted" style="font-size:12px">${a.at}</span><span style="font-size:14px">${T(a.k,a.p)}</span></div>`).join('')}</div></div></div></section>
+  <section><h2>${T('bz_calc')}</h2><div class="grid g2" style="align-items:start">
+    <div class="card cfg" id="calc" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+     ${[['farmers','k_farmers',300,10],['lpw','k_lpw',2,0.5],['val','k_val',30000,1000],['sell','k_sell',60,5],['exp','k_exp',3,1],['gain','k_gain',10,1]].map(([k,l,v,s])=>`<label>${T(l)}<input type="number" min="0" step="${s}" id="k_${k}" value="${v}"></label>`).join('')}</div>
+    <div class="card stack" id="outs"></div></div>
+    <p class="muted" style="margin-top:12px;max-width:80ch">${T('calc_note')}</p></section>`;
+}
+function calc(){
+  const g=id=>+document.getElementById('k_'+id).value||0;
+  const lst=g('farmers')*g('lpw')*4.33,sold=lst*g('sell')/100,vol=sold*g('val'),comm=vol*cfg.comm/100;
+  const lf=lst*cfg.list,cf=(lst-sold)*0.5*cfg.clear;
+  const pool=comm*cfg.share/100+cf*0.5,total=comm+lf+cf,net=total-pool;
+  const per=g('exp')?pool/g('exp'):0,farm=vol*g('gain')/100;
+  const rows=[['o_vol',vol],['o_comm',comm],['o_fees',lf+cf],['o_pool',pool],['o_per',per],['o_net',net],['o_farm',farm]];
+  document.getElementById('outs').innerHTML=rows.map(([k,v])=>`<div class="row sp"><span>${T(k)}</span><b class="mono">${fmt(v)} Frw</b></div>`).join('');
+}
+function bindBusiness(){
+  document.querySelectorAll('#cfg input').forEach(e=>e.oninput=()=>{cfg[e.id.slice(4)]=+e.value||0;calc()});
+  document.querySelectorAll('#calc input').forEach(e=>e.oninput=calc);calc();
+}
+
+/* ---------- shell ---------- */
+const TABS=['overview','phone','market','expert','business'];
+const VIEWS={overview:vOverview,phone:vPhone,market:vMarket,expert:vExpert,business:vBusiness};
+function render(){
+  document.documentElement.lang=lang==='rw'?'rw':lang;
+  document.getElementById('tagline').textContent=T('tag');
+  document.getElementById('exbadge').textContent=T('example');
+  document.querySelectorAll('#langseg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.l===lang)));
+  document.getElementById('tabs').innerHTML=TABS.map(t=>`<button data-tab="${t}" ${st.tab===t?'aria-current="page"':''}>${T('nav_'+t)}</button>`).join('');
+  document.getElementById('view').innerHTML=VIEWS[st.tab]();
+  document.getElementById('foot').innerHTML=st.tab==='overview'?`<strong>${T('ov_src')}</strong><ul>${SRC.map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${t}</a></li>`).join('')}</ul>`:'';
+  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab));
+  document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+  document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{st.filter=b.dataset.f;render()});
+  document.querySelectorAll('[data-res]').forEach(b=>b.onclick=()=>reserve(b.dataset.res));
+  const c=document.getElementById('chk');if(c)c.onclick=runCheckup;
+  if(st.tab==='phone')bindPhone();
+  if(st.tab==='expert')bindExpert();
+  if(st.tab==='business')bindBusiness();
+}
+function go(t){st.tab=t;if(location.hash!=='#'+t)location.hash=t;render();window.scrollTo(0,0)}
+function setLang(l){lang=l;try{localStorage.setItem('esoko-lang',l)}catch(e){}render()}
+document.querySelectorAll('#langseg button').forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(TABS.includes(h)&&h!==st.tab){st.tab=h;render()}});
+{const h=location.hash.slice(1);if(TABS.includes(h))st.tab=h;}
+render();
+</script>
+
+</body>
+</html>
